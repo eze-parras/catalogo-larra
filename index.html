@@ -384,6 +384,7 @@
       <div class="logo">LARRA<span> LOGÍSTICA</span></div>
       <ul class="nav-links">
         <li><a onclick="showStore()">Catálogo</a></li>
+        <li><a id="nav-mis-pedidos" onclick="showMyOrders()" style="display:none">Mis Pedidos</a></li>
         <li><a>Contacto</a></li>
       </ul>
       <div class="nav-right">
@@ -454,6 +455,21 @@
     <div class="footer-bottom">
       <span>© 2025 Logística Larra. Todos los derechos reservados.</span>
       <span>Solo para mayores de 18 años.</span>
+    </div>
+  </div>
+
+
+  <!-- MY ORDERS VIEW -->
+  <div class="view" id="my-orders-view">
+    <div style="padding:2.5rem 5vw 0">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <div style="font-family:Unbounded,sans-serif;font-size:1.2rem;font-weight:900;letter-spacing:-0.02em">Mis <span style="color:var(--accent)">Pedidos</span></div>
+          <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.25rem" id="my-orders-subtitle">Historial completo de tus compras</div>
+        </div>
+        <button class="btn-primary" onclick="showStore()" style="font-size:0.65rem;padding:0.6rem 1.25rem">← Seguir comprando</button>
+      </div>
+      <div id="my-orders-list"></div>
     </div>
   </div>
 
@@ -904,7 +920,8 @@ async function dbLoadOrders() {
     notes: o.notes,
     items: o.items,
     total: parseFloat(o.total_ars),
-    status: o.status
+    status: o.status,
+    username: o.client_username || ''
   }));
 }
 
@@ -917,7 +934,8 @@ async function dbSaveOrder(order) {
     notes: order.notes || '',
     items: order.items,
     total_ars: order.total,
-    status: 'pending'
+    status: 'pending',
+    client_username: order.username || ''
   };
   const { error } = await sb.from('orders').insert(row);
   if (error) throw error;
@@ -1060,7 +1078,10 @@ async function clientLogin() {
   if (!user) { document.getElementById('client-error').classList.add('show'); return; }
   dbUpdateLastLogin(user.id);
   user.lastLogin = todayStr();
-  currentUser = user; isAdmin = false; enterApp();
+  currentUser = user; isAdmin = false;
+  // Load this client's orders
+  loadMyOrders().then(function() { renderMyOrders(); });
+  enterApp();
 }
 
 function adminLogin() {
@@ -1076,6 +1097,8 @@ function enterApp() {
   document.getElementById('user-chip-name').textContent = currentUser.fullname || currentUser.username;
   document.getElementById('admin-btn').style.display = isAdmin ? 'block' : 'none';
   document.getElementById('cart-btn-wrap').style.display = isAdmin ? 'none' : 'block';
+  var myOrdersNav = document.getElementById('nav-mis-pedidos');
+  if (myOrdersNav) myOrdersNav.style.display = isAdmin ? 'none' : 'inline';
   fetchRate(false);
   if (isAdmin) showAdminView(); else renderStore(products);
 }
@@ -1087,6 +1110,9 @@ function doLogout() {
   document.getElementById('login-screen').classList.add('active');
   document.getElementById('store-view').classList.add('active');
   document.getElementById('admin-view').classList.remove('active');
+  document.getElementById('my-orders-view').classList.remove('active');
+  var myOrdersNav = document.getElementById('nav-mis-pedidos');
+  if (myOrdersNav) myOrdersNav.style.display = 'none';
   ['cl-user', 'cl-pass', 'adm-pass'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('client-error').classList.remove('show');
   document.getElementById('admin-error').classList.remove('show');
@@ -1130,6 +1156,7 @@ function filterProducts(cat, btn) {
 function showStore() {
   document.getElementById('store-view').classList.add('active');
   document.getElementById('admin-view').classList.remove('active');
+  document.getElementById('my-orders-view').classList.remove('active');
   document.getElementById('admin-btn').textContent = '⚙ Admin';
   renderStore(products);
 }
@@ -1242,7 +1269,7 @@ async function submitOrder() {
     const ars = calcARS(p.usd, p.margin);
     return { name: p.name, icon: p.icon, qty: c.qty, priceARS: ars };
   });
-  const order = { id: orderId, date: nowStr(), client: name, phone, address, notes, items, total, status: 'pending' };
+  const order = { id: orderId, date: nowStr(), client: name, phone, address, notes, items, total, status: 'pending', username: currentUser ? currentUser.username : '' };
   try {
     await dbSaveOrder(order);
     orders.unshift(order);
@@ -1681,6 +1708,131 @@ async function uploadProductImage(productId) {
     showToast('Error al subir imagen: ' + e.message, true);
     return null;
   }
+}
+
+
+// ══════════════════════════════════════════════
+// MIS PEDIDOS — Vista del cliente
+// ══════════════════════════════════════════════
+var STATUS_LABELS = {
+  pending:   { label: 'Pendiente',  cls: 'pending'   },
+  confirmed: { label: 'Confirmado', cls: 'confirmed'  },
+  shipped:   { label: 'Enviado',    cls: 'shipped'    },
+  delivered: { label: 'Entregado',  cls: 'delivered'  },
+  cancelled: { label: 'Cancelado',  cls: 'cancelled'  }
+};
+
+var STATUS_STEPS = ['pending','confirmed','shipped','delivered'];
+
+function showMyOrders() {
+  document.getElementById('store-view').classList.remove('active');
+  document.getElementById('admin-view').classList.remove('active');
+  document.getElementById('my-orders-view').classList.add('active');
+  renderMyOrders();
+}
+
+async function loadMyOrders() {
+  if (!currentUser) return;
+  var { data, error } = await sb.from('orders')
+    .select('*')
+    .eq('client_phone', currentUser.phone || '')
+    .order('created_at', { ascending: false });
+  if (error) { console.error('loadMyOrders:', error); return; }
+  // Merge with existing orders array for this client
+  var myOrderIds = (data || []).map(function(o) { return o.order_code; });
+  // Update orders array with fresh data for this client
+  (data || []).forEach(function(o) {
+    var existing = orders.find(function(x) { return x.id === o.order_code; });
+    var mapped = {
+      id: o.order_code,
+      dbId: o.id,
+      date: new Date(o.created_at).toLocaleString('es-AR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+      client: o.client_name,
+      phone: o.client_phone,
+      address: o.client_address,
+      notes: o.notes,
+      items: o.items,
+      total: parseFloat(o.total_ars),
+      status: o.status,
+      username: o.client_username || ''
+    };
+    if (existing) {
+      Object.assign(existing, mapped);
+    } else {
+      orders.push(mapped);
+    }
+  });
+}
+
+function getMyOrders() {
+  if (!currentUser) return [];
+  return orders.filter(function(o) {
+    return o.username === currentUser.username || o.client === currentUser.fullname;
+  }).sort(function(a, b) { return b.id.localeCompare(a.id); });
+}
+
+function buildStatusTimeline(currentStatus) {
+  if (currentStatus === 'cancelled') {
+    return '<div style="font-size:0.72rem;color:var(--danger);padding:0.5rem 0">✕ Pedido cancelado</div>';
+  }
+  var currentIdx = STATUS_STEPS.indexOf(currentStatus);
+  var html = '<div class="status-timeline">';
+  STATUS_STEPS.forEach(function(step, i) {
+    var isDone = i < currentIdx;
+    var isCurrent = i === currentIdx;
+    var labels = { pending: 'Recibido', confirmed: 'Confirmado', shipped: 'Enviado', delivered: 'Entregado' };
+    if (i > 0) html += '<div class="status-line' + (isDone ? ' done' : '') + '"></div>';
+    html += '<div class="status-step">' +
+      '<div class="status-step-dot' + (isDone || isCurrent ? (isCurrent ? ' current' : ' done') : '') + '"></div>' +
+      '<div class="status-step-label' + (isDone ? ' done' : isCurrent ? ' current' : '') + '">' + labels[step] + '</div>' +
+      '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderMyOrders() {
+  var container = document.getElementById('my-orders-list');
+  var subtitle = document.getElementById('my-orders-subtitle');
+  var myOrders = getMyOrders();
+
+  if (!myOrders.length) {
+    container.innerHTML = '<div class="my-orders-empty"><div class="my-orders-empty-icon">📦</div><p>Todavía no tenés pedidos.<br>¡Explorá el catálogo y hacé tu primer pedido!</p><button class="btn-primary" onclick="showStore()" style="font-size:0.65rem;padding:0.6rem 1.25rem;margin-top:0.5rem">Ver catálogo →</button></div>';
+    if (subtitle) subtitle.textContent = 'Todavía no tenés pedidos';
+    return;
+  }
+
+  if (subtitle) subtitle.textContent = myOrders.length + ' pedido' + (myOrders.length !== 1 ? 's' : '') + ' en total';
+
+  container.innerHTML = myOrders.map(function(o) {
+    var statusInfo = STATUS_LABELS[o.status] || { label: o.status, cls: 'pending' };
+    var itemsHtml = o.items.map(function(i) {
+      return '<strong>' + i.icon + ' ' + i.name + '</strong> × ' + i.qty + (i.priceARS ? ' — ' + fmt(i.priceARS * i.qty) : '');
+    }).join('<br>');
+    var waBtn = o.status !== 'cancelled'
+      ? '<button class="my-order-wa" onclick="contactAboutOrder(\'' + o.id + '\')">💬 Consultar</button>'
+      : '';
+    return '<div class="my-order-card">' +
+      '<div class="my-order-header">' +
+        '<div><span class="my-order-id">' + o.id + '</span><span class="my-order-date" style="margin-left:0.75rem">' + o.date + '</span></div>' +
+        '<span class="my-order-status ' + statusInfo.cls + '">' + statusInfo.label + '</span>' +
+      '</div>' +
+      buildStatusTimeline(o.status) +
+      '<div class="my-order-items">' + itemsHtml + '</div>' +
+      '<div class="my-order-footer">' +
+        '<div>' +
+          '<div class="my-order-total">' + fmt(o.total) + '</div>' +
+          '<div class="my-order-address">📍 ' + o.address + '</div>' +
+        '</div>' +
+        waBtn +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function contactAboutOrder(orderId) {
+  var msg = 'Hola! Soy ' + (currentUser ? currentUser.fullname : '') + ' y quería consultar sobre mi pedido *' + orderId + '*. ¿Me podés dar una actualización?';
+  window.open('https://wa.me/' + OWNER_WA + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
 // ══════════════════════════════════════════════
