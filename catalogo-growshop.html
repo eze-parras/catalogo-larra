@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logística Larra — Catálogo</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0f0a; --surface:#111811; --card:#151d15; --card-hover:#1a251a;
+    --accent:#7dff6b; --accent2:#c8ff3e; --muted:#3a4a3a;
+    --text:#e8f0e8; --text-dim:#8a9e8a; --border:#1f2f1f;
+    --danger:#ff5c5c; --warning:#ffb347;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+  .view{display:none;} .view.active{display:block;}
+
+  /* LOGIN */
+  .login-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;position:relative;overflow:hidden;}
+  .login-screen::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(125,255,107,0.06) 0%,transparent 70%);pointer-events:none;}
+  .login-box{width:100%;max-width:420px;position:relative;z-index:1;}
+  .login-logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:1.3rem;color:var(--accent);margin-bottom:0.3rem;}
+  .login-logo span{color:var(--text-dim);font-weight:300;}
+  .login-sub{font-size:0.8rem;color:var(--text-dim);margin-bottom:2.5rem;letter-spacing:0.05em;}
+  .login-card{background:var(--surface);border:1px solid var(--border);padding:2.5rem;}
+  .login-field{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.1rem;}
+  .login-label{font-size:0.68rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);}
+  .login-input{background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.7rem 0.9rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;width:100%;}
+  .login-input:focus{border-color:var(--accent);}
+  .login-input::placeholder{color:var(--muted);}
+  .login-btn{width:100%;background:var(--accent);color:var(--bg);border:none;padding:0.85rem;font-family:'Unbounded',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;}
+  .login-btn:hover{background:var(--accent2);transform:translateY(-1px);}
+  .login-error{background:rgba(255,92,92,0.12);border:1px solid rgba(255,92,92,0.3);color:var(--danger);padding:0.65rem 0.9rem;font-size:0.82rem;margin-bottom:1rem;display:none;}
+  .login-error.show{display:block;}
+  .login-switch{margin-top:1.25rem;text-align:center;font-size:0.8rem;color:var(--text-dim);}
+  .login-switch a{color:var(--accent);cursor:pointer;text-decoration:underline;}
+  .login-tabs{display:flex;margin-bottom:2rem;border-bottom:1px solid var(--border);}
+  .ltab{flex:1;background:transparent;border:none;padding:0.75rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;}
+  .ltab.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .ltab-panel{display:none;} .ltab-panel.active{display:block;}
+
+  /* HEADER */
+  header{position:sticky;top:0;z-index:100;padding:0 5vw;border-bottom:1px solid var(--border);background:rgba(10,15,10,0.97);backdrop-filter:blur(12px);}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px;gap:1rem;}
+  .logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:1.1rem;letter-spacing:-0.02em;color:var(--accent);flex-shrink:0;}
+  .logo span{color:var(--text-dim);font-weight:300;}
+  .nav-links{display:flex;gap:2rem;list-style:none;}
+  .nav-links a{color:var(--text-dim);text-decoration:none;font-size:0.85rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;transition:color 0.2s;cursor:pointer;}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-right{display:flex;gap:0.75rem;align-items:center;}
+  .user-chip{background:var(--card);border:1px solid var(--border);color:var(--text-dim);padding:0.4rem 0.9rem;font-size:0.78rem;display:flex;align-items:center;gap:0.4rem;}
+  .user-chip strong{color:var(--accent);}
+  .cart-btn{background:var(--accent);color:var(--bg);border:none;padding:0.5rem 1.2rem;font-family:'Unbounded',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.2s;}
+  .cart-btn:hover{background:var(--accent2);transform:translateY(-1px);}
+  .logout-btn{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:0.5rem 0.9rem;font-family:'DM Sans',sans-serif;font-size:0.75rem;cursor:pointer;transition:all 0.2s;}
+  .logout-btn:hover{border-color:var(--danger);color:var(--danger);}
+  .admin-toggle{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:0.5rem 1rem;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;cursor:pointer;transition:all 0.2s;}
+  .admin-toggle:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* RATE BAR */
+  .rate-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0.5rem 5vw;display:flex;align-items:center;gap:1.5rem;font-size:0.75rem;}
+  .rate-item{display:flex;align-items:center;gap:0.4rem;color:var(--text-dim);}
+  .rate-val{color:var(--accent);font-weight:700;font-family:'Unbounded',sans-serif;font-size:0.72rem;}
+  .rate-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
+  .rate-dot.stale{background:var(--warning);animation:none;}
+  .rate-dot.error{background:var(--danger);animation:none;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .rate-refresh{background:transparent;border:none;color:var(--text-dim);cursor:pointer;font-size:0.78rem;padding:0 0.5rem;transition:color 0.2s;}
+  .rate-refresh:hover{color:var(--accent);}
+
+  /* STORE */
+  .hero{position:relative;padding:6rem 5vw 4.5rem;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 70% 50%,rgba(125,255,107,0.05) 0%,transparent 70%);pointer-events:none;}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.72rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;}
+  .hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--accent);}
+  .hero h1{font-family:'Unbounded',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.03em;max-width:700px;margin-bottom:1.5rem;}
+  .hero h1 em{font-style:normal;color:var(--accent);display:block;}
+  .hero p{max-width:440px;color:var(--text-dim);font-size:1rem;line-height:1.7;margin-bottom:2.5rem;}
+  .btn-primary{background:var(--accent);color:var(--bg);border:none;padding:0.85rem 2rem;font-family:'Unbounded',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+  .btn-primary:hover{background:var(--accent2);transform:translateY(-2px);}
+  .filter-bar{padding:1.25rem 5vw;border-bottom:1px solid var(--border);border-top:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;overflow-x:auto;scrollbar-width:none;}
+  .filter-bar::-webkit-scrollbar{display:none;}
+  .filter-label{font-size:0.68rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;margin-right:0.5rem;}
+  .filter-btn{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:0.4rem 1rem;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
+  .filter-btn:hover,.filter-btn.active{background:var(--accent);border-color:var(--accent);color:var(--bg);}
+  .catalog{padding:3.5rem 5vw;}
+  .section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2rem;}
+  .section-title{font-family:'Unbounded',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);}
+  .section-count{font-size:0.75rem;color:var(--muted);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.5px;}
+  .card{background:var(--card);cursor:pointer;transition:background 0.25s;position:relative;overflow:hidden;display:flex;flex-direction:column;animation:fadeUp 0.4s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  .card:hover{background:var(--card-hover);}
+  .card-badge{position:absolute;top:1rem;left:1rem;z-index:2;background:var(--accent);color:var(--bg);font-family:'Unbounded',sans-serif;font-size:0.52rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.25rem 0.6rem;}
+  .card-badge.out{background:var(--danger);color:#fff;}
+  .card-badge.low{background:var(--warning);color:#000;}
+  .card-img{width:100%;aspect-ratio:1;overflow:hidden;background:var(--surface);display:flex;align-items:center;justify-content:center;position:relative;}
+  .card-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;}
+  .card:hover .card-img img{transform:scale(1.06);}
+  .card:hover .product-icon{transform:scale(1.1) rotate(-3deg);}
+  .product-icon{font-size:4.5rem;transition:transform 0.3s;user-select:none;}
+  .img-upload-wrap{display:flex;flex-direction:column;gap:0.6rem;}
+  .img-preview-box{width:100%;aspect-ratio:16/9;background:var(--bg);border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;cursor:pointer;transition:border-color 0.2s;}
+  .img-preview-box:hover{border-color:var(--accent);}
+  .img-preview-box img{width:100%;height:100%;object-fit:cover;}
+  .img-preview-placeholder{display:flex;flex-direction:column;align-items:center;gap:0.4rem;color:var(--muted);pointer-events:none;}
+  .img-preview-placeholder span{font-size:1.8rem;}
+  .img-preview-placeholder p{font-size:0.7rem;letter-spacing:0.05em;text-transform:uppercase;}
+  .img-upload-btn-row{display:flex;gap:0.5rem;}
+  .img-upload-btn{flex:1;background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:0.45rem 0.8rem;font-size:0.75rem;cursor:pointer;transition:all 0.2s;}
+  .img-upload-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .img-upload-input{display:none;}
+  .img-upload-bar{height:3px;background:var(--border);margin-top:0.3rem;display:none;}
+  .img-upload-bar-inner{height:100%;background:var(--accent);width:0%;transition:width 0.3s;}
+  .img-upload-bar.active{display:block;}
+  .img-remove-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.45rem 0.7rem;font-size:0.75rem;cursor:pointer;transition:all 0.2s;}
+  .img-remove-btn:hover{border-color:var(--danger);color:var(--danger);}
+  .card-body{padding:1.1rem 1.4rem 1.4rem;flex:1;display:flex;flex-direction:column;}
+  .card-category{font-size:0.62rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem;}
+  .card-name{font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700;line-height:1.3;letter-spacing:-0.01em;margin-bottom:0.5rem;flex:1;}
+  .card-desc{font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:1rem;}
+  .card-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:0.9rem;}
+  .card-price{font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;color:var(--accent);letter-spacing:-0.02em;}
+  .card-price-old{font-size:0.72rem;color:var(--muted);text-decoration:line-through;margin-left:0.35rem;}
+  .add-btn{width:34px;height:34px;background:var(--accent);border:none;color:var(--bg);font-size:1.2rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;}
+  .add-btn:hover{background:var(--accent2);transform:scale(1.1);}
+  .add-btn:disabled{background:var(--muted);cursor:not-allowed;opacity:0.5;transform:none;}
+  .featured-banner{margin:0 5vw 4rem;background:var(--accent);padding:2.5rem 3.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;overflow:hidden;position:relative;}
+  .featured-banner::before{content:'';position:absolute;right:-5%;top:-30%;width:350px;height:350px;background:rgba(0,0,0,0.06);border-radius:50%;}
+  .banner-text{position:relative;z-index:1;}
+  .banner-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(10,15,10,0.55);margin-bottom:0.4rem;}
+  .banner-title{font-family:'Unbounded',sans-serif;font-size:clamp(1.3rem,3vw,2rem);font-weight:900;color:var(--bg);line-height:1.1;letter-spacing:-0.02em;margin-bottom:0.6rem;}
+  .banner-subtitle{font-size:0.9rem;color:rgba(10,15,10,0.6);max-width:360px;line-height:1.6;}
+  .banner-cta{position:relative;z-index:1;background:var(--bg);color:var(--accent);border:none;padding:0.85rem 2rem;font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.05em;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
+  .banner-cta:hover{background:var(--surface);transform:translateY(-2px);}
+  footer{border-top:1px solid var(--border);padding:3rem 5vw;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;}
+  .footer-logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:1rem;color:var(--accent);margin-bottom:0.6rem;}
+  .footer-tagline{font-size:0.82rem;color:var(--text-dim);line-height:1.7;}
+  .footer-col h4{font-family:'Unbounded',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1rem;}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem;}
+  .footer-col ul li a{color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;cursor:pointer;}
+  .footer-col ul li a:hover{color:var(--accent);}
+  .footer-bottom{border-top:1px solid var(--border);padding:1.25rem 5vw;display:flex;align-items:center;justify-content:space-between;font-size:0.72rem;color:var(--muted);}
+
+  /* ADMIN */
+  .admin-header{padding:2rem 5vw 0;border-bottom:1px solid var(--border);}
+  .admin-header-top{display:flex;align-items:center;justify-content:space-between;padding-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+  .admin-title{font-family:'Unbounded',sans-serif;font-size:1.4rem;font-weight:900;letter-spacing:-0.02em;}
+  .admin-title span{color:var(--accent);}
+  .admin-tabs{display:flex;overflow-x:auto;scrollbar-width:none;}
+  .admin-tabs::-webkit-scrollbar{display:none;}
+  .admin-tab{background:transparent;border:none;border-bottom:2px solid transparent;color:var(--text-dim);padding:0.75rem 1.4rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+  .admin-tab:hover{color:var(--text);}
+  .admin-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .admin-content{padding:2.5rem 5vw;}
+  .admin-section{display:none;}
+  .admin-section.active{display:block;}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem;margin-bottom:2.5rem;}
+  .stat-card{background:var(--card);border:1px solid var(--border);padding:1.4rem 1.6rem;}
+  .stat-label{font-size:0.68rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.5rem;}
+  .stat-value{font-family:'Unbounded',sans-serif;font-size:1.7rem;font-weight:900;letter-spacing:-0.03em;color:var(--accent);}
+  .stat-sub{font-size:0.75rem;color:var(--muted);margin-top:0.25rem;}
+  .table-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:0.75rem;}
+  .search-input{background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.55rem 1rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;width:260px;outline:none;transition:border-color 0.2s;}
+  .search-input:focus{border-color:var(--accent);}
+  .search-input::placeholder{color:var(--muted);}
+  .btn-add{background:var(--accent);color:var(--bg);border:none;padding:0.55rem 1.2rem;font-family:'Unbounded',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.2s;}
+  .btn-add:hover{background:var(--accent2);}
+  .admin-table-wrap{overflow-x:auto;}
+  table.admin-table{width:100%;border-collapse:collapse;font-size:0.83rem;}
+  table.admin-table th{text-align:left;padding:0.75rem 0.9rem;font-family:'Unbounded',sans-serif;font-size:0.56rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);white-space:nowrap;}
+  table.admin-table td{padding:0.8rem 0.9rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+  table.admin-table tr:hover td{background:var(--card);}
+  .td-name{font-weight:500;display:flex;align-items:center;gap:0.6rem;}
+  .td-icon{font-size:1.3rem;}
+  .stock-badge{display:inline-flex;align-items:center;font-size:0.72rem;font-weight:500;padding:0.2rem 0.6rem;}
+  .stock-badge.ok{background:rgba(125,255,107,0.12);color:var(--accent);}
+  .stock-badge.low{background:rgba(255,179,71,0.15);color:var(--warning);}
+  .stock-badge.out{background:rgba(255,92,92,0.15);color:var(--danger);}
+  .row-actions{display:flex;gap:0.5rem;align-items:center;}
+  .btn-edit{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:0.3rem 0.75rem;font-size:0.75rem;cursor:pointer;transition:all 0.2s;}
+  .btn-edit:hover{border-color:var(--accent);color:var(--accent);}
+  .btn-del{background:transparent;border:1px solid transparent;color:var(--muted);padding:0.3rem 0.6rem;font-size:0.8rem;cursor:pointer;transition:all 0.2s;}
+  .btn-del:hover{border-color:var(--danger);color:var(--danger);}
+  .toggle-vis{width:36px;height:20px;background:var(--muted);border:none;border-radius:10px;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;}
+  .toggle-vis::after{content:'';position:absolute;left:3px;top:3px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform 0.2s;}
+  .toggle-vis.on{background:var(--accent);}
+  .toggle-vis.on::after{transform:translateX(16px);}
+  .alert-list{display:flex;flex-direction:column;gap:0.75rem;}
+  .alert-item{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--warning);padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+  .alert-item.critical{border-left-color:var(--danger);}
+  .alert-name{font-weight:500;font-size:0.9rem;}
+  .alert-stock-info{font-size:0.8rem;color:var(--text-dim);margin-top:0.15rem;}
+  .btn-restock{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:0.35rem 0.85rem;font-size:0.75rem;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
+  .btn-restock:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* PRICING PANEL */
+  .pricing-panel{background:var(--card);border:1px solid var(--border);padding:1.75rem;margin-bottom:2rem;}
+  .pricing-panel-title{font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1.25rem;}
+  .pricing-row{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+  .pricing-item{display:flex;flex-direction:column;gap:0.3rem;}
+  .pricing-item-label{font-size:0.65rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);}
+  .pricing-big{font-family:'Unbounded',sans-serif;font-size:1.5rem;font-weight:900;color:var(--accent);letter-spacing:-0.02em;}
+  .pricing-big.loading{color:var(--muted);}
+  .pricing-sub{font-size:0.72rem;color:var(--muted);}
+  .rate-status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;background:var(--accent);}
+  .rate-status-dot.stale{background:var(--warning);}
+  .rate-status-dot.error{background:var(--danger);}
+  .btn-refresh{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:0.45rem 1rem;font-family:'DM Sans',sans-serif;font-size:0.78rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;}
+  .btn-refresh:hover{border-color:var(--accent);color:var(--accent);}
+  .btn-refresh.spinning span{display:inline-block;animation:spin 0.6s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .manual-rate-wrap{display:flex;align-items:center;gap:0.5rem;}
+  .manual-rate-input{background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.45rem 0.7rem;font-family:'Unbounded',sans-serif;font-size:0.88rem;width:130px;outline:none;transition:border-color 0.2s;}
+  .manual-rate-input:focus{border-color:var(--accent);}
+  .btn-apply{background:var(--accent);color:var(--bg);border:none;padding:0.45rem 1rem;font-family:'Unbounded',sans-serif;font-size:0.62rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+  .btn-apply:hover{background:var(--accent2);}
+
+  /* USER MANAGEMENT */
+  .user-status{display:inline-flex;align-items:center;font-size:0.72rem;font-weight:500;padding:0.2rem 0.7rem;}
+  .user-status.active{background:rgba(125,255,107,0.12);color:var(--accent);}
+  .user-status.inactive{background:rgba(255,92,92,0.12);color:var(--danger);}
+  .section-intro{font-size:0.88rem;color:var(--text-dim);margin-bottom:1.5rem;line-height:1.6;}
+
+  /* MODALS */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--surface);border:1px solid var(--border);padding:2rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;animation:modalIn 0.22s ease;}
+  .modal.narrow{max-width:400px;}
+  @keyframes modalIn{from{opacity:0;transform:translateY(18px) scale(0.97);}to{opacity:1;transform:none;}}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;}
+  .modal-title{font-family:'Unbounded',sans-serif;font-size:0.95rem;font-weight:700;}
+  .modal-close{background:transparent;border:none;color:var(--text-dim);font-size:1.5rem;cursor:pointer;line-height:1;transition:color 0.2s;}
+  .modal-close:hover{color:var(--text);}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem 1.25rem;}
+  .form-field{display:flex;flex-direction:column;gap:0.4rem;}
+  .form-field.full{grid-column:1/-1;}
+  .form-label{font-size:0.68rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);}
+  .form-input,.form-select,.form-textarea{background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.6rem 0.85rem;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;width:100%;}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);}
+  .form-select option{background:var(--surface);}
+  .form-textarea{resize:vertical;min-height:80px;}
+  /* live price preview inside modal */
+  .price-preview{background:var(--bg);border:1px solid var(--border);padding:0.9rem 1.1rem;margin-top:0.25rem;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;}
+  .price-preview-label{font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;}
+  .price-preview-val{font-family:'Unbounded',sans-serif;font-size:1.1rem;font-weight:900;color:var(--accent);}
+  .modal-footer{display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1.75rem;padding-top:1.25rem;border-top:1px solid var(--border);}
+  .btn-cancel{background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:0.6rem 1.2rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+  .btn-cancel:hover{border-color:var(--text-dim);color:var(--text);}
+  .btn-save{background:var(--accent);color:var(--bg);border:none;padding:0.6rem 1.5rem;font-family:'Unbounded',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+  .btn-save:hover{background:var(--accent2);}
+  .creds-box{background:var(--card);border:1px solid var(--accent);padding:1.25rem;margin-top:1.25rem;display:none;}
+  .creds-box.show{display:block;}
+  .creds-title{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem;}
+  .creds-row{display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0;border-bottom:1px solid var(--border);font-size:0.85rem;}
+  .creds-row:last-child{border-bottom:none;}
+  .creds-key{color:var(--text-dim);font-size:0.78rem;}
+  .creds-val{font-family:monospace;color:var(--accent);font-size:0.88rem;font-weight:700;}
+  .creds-note{font-size:0.75rem;color:var(--text-dim);margin-top:0.75rem;line-height:1.5;}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:2rem;right:2rem;background:var(--accent);color:var(--bg);padding:0.75rem 1.5rem;font-family:'Unbounded',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.04em;z-index:300;transform:translateY(4rem);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast.error{background:var(--danger);color:#fff;}
+  .toast.warn{background:var(--warning);color:#000;}
+
+  @media(max-width:768px){
+    .hero h1{font-size:2.2rem;}
+    .nav-links{display:none;}
+    footer{grid-template-columns:1fr;}
+    .featured-banner{flex-direction:column;padding:2rem;}
+    .form-grid{grid-template-columns:1fr;}
+    .pricing-row{flex-direction:column;align-items:flex-start;}
+    .cart-drawer{width:100vw;}
+  }
+
+  /* ── CART DRAWER ── */
+  .cart-drawer{position:fixed;top:0;right:0;width:420px;max-width:100vw;height:100vh;background:var(--surface);border-left:1px solid var(--border);z-index:300;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;}
+  .cart-drawer.open{transform:translateX(0);}
+  .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:299;display:none;}
+  .cart-overlay.open{display:block;}
+  .cart-header{padding:1.5rem 1.75rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+  .cart-title{font-family:'Unbounded',sans-serif;font-size:0.9rem;font-weight:700;}
+  .cart-close{background:transparent;border:none;color:var(--text-dim);font-size:1.4rem;cursor:pointer;transition:color 0.2s;line-height:1;}
+  .cart-close:hover{color:var(--text);}
+  .cart-body{flex:1;overflow-y:auto;padding:1.25rem 1.75rem;}
+  .cart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;color:var(--text-dim);gap:0.75rem;font-size:0.9rem;}
+  .cart-empty-icon{font-size:3rem;opacity:0.3;}
+  .cart-item{display:flex;align-items:center;gap:1rem;padding:0.9rem 0;border-bottom:1px solid var(--border);}
+  .cart-item-icon{font-size:2rem;flex-shrink:0;width:44px;text-align:center;}
+  .cart-item-info{flex:1;min-width:0;}
+  .cart-item-name{font-weight:500;font-size:0.85rem;line-height:1.3;}
+  .cart-item-price{font-size:0.78rem;color:var(--accent);font-family:'Unbounded',sans-serif;font-weight:700;margin-top:0.2rem;}
+  .cart-item-controls{display:flex;align-items:center;gap:0.4rem;flex-shrink:0;}
+  .qty-btn{width:26px;height:26px;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+  .qty-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .qty-val{font-family:'Unbounded',sans-serif;font-size:0.8rem;font-weight:700;min-width:20px;text-align:center;}
+  .cart-item-remove{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;padding:0 0.25rem;transition:color 0.15s;}
+  .cart-item-remove:hover{color:var(--danger);}
+  .cart-footer{padding:1.25rem 1.75rem;border-top:1px solid var(--border);flex-shrink:0;}
+  .cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;}
+  .cart-total-label{font-size:0.78rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;}
+  .cart-total-val{font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:900;color:var(--accent);}
+  .btn-checkout{width:100%;background:var(--accent);color:var(--bg);border:none;padding:0.9rem;font-family:'Unbounded',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.2s;}
+  .btn-checkout:hover{background:var(--accent2);}
+  .btn-checkout:disabled{background:var(--muted);cursor:not-allowed;opacity:0.6;}
+
+  /* ── CHECKOUT MODAL ── */
+  .modal.wide{max-width:600px;}
+  .checkout-section-title{font-family:'Unbounded',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin:1.5rem 0 0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
+  .checkout-section-title:first-of-type{margin-top:0;}
+  .order-summary-item{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;font-size:0.85rem;border-bottom:1px solid var(--border);}
+  .order-summary-item:last-child{border-bottom:none;}
+  .order-summary-name{display:flex;align-items:center;gap:0.5rem;color:var(--text-dim);}
+  .order-summary-price{font-weight:500;font-family:'Unbounded',sans-serif;font-size:0.78rem;color:var(--accent);}
+  .order-total-row{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:1rem;border-top:2px solid var(--accent);}
+  .order-total-label{font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;}
+  .order-total-val{font-family:'Unbounded',sans-serif;font-size:1.3rem;font-weight:900;color:var(--accent);}
+
+  /* ── SUCCESS SCREEN ── */
+  .success-screen{text-align:center;padding:1.5rem 0.5rem 0.5rem;}
+  .success-icon{font-size:3.5rem;margin-bottom:0.75rem;}
+  .success-title{font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;color:var(--accent);margin-bottom:0.75rem;line-height:1.2;}
+  .success-sub{font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-bottom:1.75rem;}
+  .success-btns{display:flex;flex-direction:column;gap:0.75rem;}
+  .btn-wa{background:#25D366;color:#fff;border:none;padding:0.85rem 1.5rem;font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.04em;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;width:100%;}
+  .btn-wa:hover{background:#1ebe5d;transform:translateY(-1px);}
+  .btn-close-success{width:100%;background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:0.75rem;font-family:'DM Sans',sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+  .btn-close-success:hover{border-color:var(--text-dim);color:var(--text);}
+
+  /* ── ADMIN ORDERS TAB ── */
+  .order-card{background:var(--card);border:1px solid var(--border);padding:1.25rem 1.5rem;margin-bottom:0.75rem;}
+  .order-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;flex-wrap:wrap;gap:0.5rem;}
+  .order-id{font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;color:var(--accent);}
+  .order-date{font-size:0.75rem;color:var(--text-dim);}
+  .order-status-badge{font-size:0.65rem;font-weight:700;padding:0.2rem 0.65rem;letter-spacing:0.05em;text-transform:uppercase;}
+  .order-status-badge.pending{background:rgba(255,179,71,0.15);color:var(--warning);}
+  .order-status-badge.confirmed{background:rgba(125,255,107,0.12);color:var(--accent);}
+  .order-status-badge.cancelled{background:rgba(255,92,92,0.12);color:var(--danger);}
+  .order-client-name{font-size:0.9rem;font-weight:500;margin-bottom:0.2rem;}
+  .order-meta{font-size:0.78rem;color:var(--text-dim);line-height:1.7;margin-bottom:0.75rem;}
+  .order-items-preview{font-size:0.8rem;color:var(--text-dim);margin-bottom:0.75rem;line-height:1.6;}
+  .order-footer-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;padding-top:0.75rem;border-top:1px solid var(--border);}
+  .order-total-display{font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;color:var(--accent);}
+  .order-action-btns{display:flex;gap:0.5rem;}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="view active" id="login-screen">
+  <div class="login-screen">
+    <div class="login-box">
+      <div class="login-logo">LARRA<span> LOGÍSTICA</span></div>
+      <div class="login-sub">Acceso exclusivo para clientes registrados</div>
+      <div class="login-card">
+        <div class="login-tabs">
+          <button class="ltab active" onclick="switchLoginTab('client',this)">Ingresar al catálogo</button>
+          <button class="ltab" onclick="switchLoginTab('admin',this)">Administrador</button>
+        </div>
+        <div class="ltab-panel active" id="ltab-client">
+          <div class="login-error" id="client-error">Usuario o contraseña incorrectos.</div>
+          <div class="login-field"><label class="login-label">Usuario</label><input class="login-input" id="cl-user" type="text" placeholder="tu_usuario" autocomplete="username"></div>
+          <div class="login-field"><label class="login-label">Contraseña</label><input class="login-input" id="cl-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')clientLogin()"></div>
+          <button class="login-btn" onclick="clientLogin()">Ingresar →</button>
+          <div class="login-switch">¿No tenés acceso? Contactá a <a onclick="showToast('Escribinos para obtener tu acceso')">Logística Larra</a></div>
+        </div>
+        <div class="ltab-panel" id="ltab-admin">
+          <div class="login-error" id="admin-error">Contraseña de administrador incorrecta.</div>
+          <div class="login-field"><label class="login-label">Contraseña de administrador</label><input class="login-input" id="adm-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+          <button class="login-btn" onclick="adminLogin()">Acceder al panel →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="view" id="app-view">
+  <header>
+    <nav class="nav">
+      <div class="logo">LARRA<span> LOGÍSTICA</span></div>
+      <ul class="nav-links">
+        <li><a onclick="showStore()">Catálogo</a></li>
+        <li><a>Contacto</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="user-chip">👤 <strong id="user-chip-name"></strong></div>
+        <button class="cart-btn" id="cart-btn-wrap" onclick="openCartDrawer()">🛒 Carrito (<span id="cart-count">0</span>)</button>
+        <button class="admin-toggle" id="admin-btn" onclick="toggleAdmin()" style="display:none">⚙ Admin</button>
+        <button class="logout-btn" onclick="doLogout()">Salir</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- RATE BAR (visible for all logged-in users) -->
+  <div class="rate-bar" id="rate-bar">
+    <div class="rate-item"><span class="rate-dot" id="rate-dot"></span> USDT/ARS</div>
+    <div class="rate-item">Cotización: <span class="rate-val" id="rate-bar-val">—</span></div>
+    <div class="rate-item" id="rate-bar-time" style="color:var(--muted)">Actualizando...</div>
+    <button class="rate-refresh" onclick="fetchRate(true)" title="Actualizar cotización">↻</button>
+  </div>
+
+  <!-- STORE VIEW -->
+  <div class="view active" id="store-view">
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-eyebrow">Catálogo 2025</div>
+      <h1>Todo lo que<em>necesitás.</em></h1>
+      <p>Los mejores accesorios, productos de bienestar y más. Calidad garantizada, envíos a todo el país.</p>
+      <a href="#catalogo" class="btn-primary">Ver Productos</a>
+    </section>
+    <div class="filter-bar">
+      <span class="filter-label">Filtrar:</span>
+      <button class="filter-btn active" onclick="filterProducts('todos',this)">Todos</button>
+      <button class="filter-btn" onclick="filterProducts('vaporizadores',this)">Vaporizadores</button>
+      <button class="filter-btn" onclick="filterProducts('accesorios',this)">Accesorios</button>
+      <button class="filter-btn" onclick="filterProducts('bienestar',this)">CBD & Bienestar</button>
+      <button class="filter-btn" onclick="filterProducts('papeles',this)">Papeles & Filtros</button>
+      <button class="filter-btn" onclick="filterProducts('almacenamiento',this)">Almacenamiento</button>
+      <button class="filter-btn" onclick="filterProducts('ofertas',this)">🔥 Ofertas</button>
+    </div>
+    <section class="catalog" id="catalogo">
+      <div class="section-header">
+        <span class="section-title">Productos disponibles</span>
+        <span class="section-count" id="product-count"></span>
+      </div>
+      <div class="grid" id="product-grid"></div>
+    </section>
+    <div class="featured-banner">
+      <div class="banner-text">
+        <div class="banner-eyebrow">Oferta especial</div>
+        <div class="banner-title">Combo Starter Pack</div>
+        <p class="banner-subtitle">Todo lo que necesitás para empezar. Vaporizador + accesorios + estuche a precio especial.</p>
+      </div>
+      <button class="banner-cta" onclick="showToast('Te contactaremos pronto')">Quiero mi combo →</button>
+    </div>
+    <footer>
+      <div>
+        <div class="footer-logo">LARRA LOGÍSTICA</div>
+        <p class="footer-tagline">Tu tienda de confianza.<br>Envíos a todo el país en 48hs.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Información</h4>
+        <ul><li><a>Sobre nosotros</a></li><li><a>Cómo comprar</a></li><li><a>Envíos y devoluciones</a></li><li><a>Preguntas frecuentes</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul><li><a>📱 WhatsApp</a></li><li><a>📸 Instagram</a></li><li><a>✉️ Email</a></li><li><a>📍 Local físico</a></li></ul>
+      </div>
+    </footer>
+    <div class="footer-bottom">
+      <span>© 2025 Logística Larra. Todos los derechos reservados.</span>
+      <span>Solo para mayores de 18 años.</span>
+    </div>
+  </div>
+
+  <!-- ADMIN VIEW -->
+  <div class="view" id="admin-view">
+    <div class="admin-header">
+      <div class="admin-header-top">
+        <div class="admin-title">Panel <span>Admin</span></div>
+        <button class="btn-add" onclick="openProductModal()">+ Nuevo producto</button>
+      </div>
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchTab('dashboard',this)">Dashboard</button>
+        <button class="admin-tab" onclick="switchTab('pedidos',this)">Pedidos</button>
+        <button class="admin-tab" onclick="switchTab('productos',this)">Productos</button>
+        <button class="admin-tab" onclick="switchTab('stock',this)">Alertas Stock</button>
+        <button class="admin-tab" onclick="switchTab('usuarios',this)">Usuarios</button>
+        <button class="admin-tab" onclick="switchTab('cotizacion',this)">Cotización USD</button>
+        <button class="admin-tab" onclick="switchTab('ajustes',this)">Ajustes</button>
+      </div>
+    </div>
+    <div class="admin-content">
+
+      <!-- DASHBOARD -->
+      <div class="admin-section active" id="tab-dashboard">
+        <div class="stats-grid" id="stats-grid"></div>
+      </div>
+
+      <!-- PEDIDOS -->
+      <div class="admin-section" id="tab-pedidos">
+        <div class="table-toolbar">
+          <span style="font-size:0.82rem;color:var(--text-dim)">Pedidos recibidos desde el catálogo</span>
+          <div style="display:flex;gap:0.5rem">
+            <button class="btn-edit" onclick="filterOrders('todos')">Todos</button>
+            <button class="btn-edit" onclick="filterOrders('pending')">Pendientes</button>
+            <button class="btn-edit" onclick="filterOrders('confirmed')">Confirmados</button>
+          </div>
+        </div>
+        <div id="orders-list"><p style="color:var(--text-dim);padding:2rem 0">Aún no hay pedidos registrados.</p></div>
+      </div>
+
+      <!-- PRODUCTOS -->
+      <div class="admin-section" id="tab-productos">
+        <div class="table-toolbar">
+          <input class="search-input" type="text" placeholder="Buscar producto..." oninput="filterTable(this.value)">
+          <button class="btn-add" onclick="openProductModal()">+ Nuevo producto</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Producto</th><th>Categoría</th><th>Precio USD</th><th>Margen</th><th>Precio ARS</th><th>Stock</th><th>Visible</th><th>Acciones</th></tr></thead>
+            <tbody id="admin-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- STOCK -->
+      <div class="admin-section" id="tab-stock">
+        <div id="alert-list-wrap"></div>
+      </div>
+
+      <!-- USUARIOS -->
+      <div class="admin-section" id="tab-usuarios">
+        <p class="section-intro">Gestioná los usuarios que tienen acceso al catálogo. Cada cliente necesita un usuario y contraseña que vos generás.</p>
+        <div class="table-toolbar">
+          <input class="search-input" type="text" placeholder="Buscar usuario..." oninput="filterUsers(this.value)">
+          <button class="btn-add" onclick="openUserModal()">+ Crear usuario</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Usuario</th><th>Nombre</th><th>Creado</th><th>Último acceso</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- COTIZACIÓN USD -->
+      <div class="admin-section" id="tab-cotizacion">
+        <p class="section-intro">El sistema actualiza automáticamente la cotización USDT/ARS. También podés aplicar una cotización manual si tu precio de compra difiere del mercado.</p>
+
+        <div class="pricing-panel">
+          <div class="pricing-panel-title">Estado actual de la cotización</div>
+          <div class="pricing-row">
+            <div class="pricing-item">
+              <div class="pricing-item-label">USDT / ARS (mercado)</div>
+              <div class="pricing-big" id="admin-rate-market">—</div>
+              <div class="pricing-sub" id="admin-rate-time">Sin datos</div>
+            </div>
+            <div class="pricing-item">
+              <div class="pricing-item-label">Cotización aplicada</div>
+              <div class="pricing-big" id="admin-rate-applied">—</div>
+              <div class="pricing-sub" id="admin-rate-source">—</div>
+            </div>
+            <div class="pricing-item" style="margin-left:auto">
+              <button class="btn-refresh" id="btn-refresh" onclick="fetchRate(true)"><span>↻</span> Actualizar ahora</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing-panel">
+          <div class="pricing-panel-title">Cotización manual</div>
+          <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:1rem;line-height:1.6">Usá esto si tu cotización de compra de USDT es distinta a la del mercado. Dejá en blanco para usar la automática.</p>
+          <div class="manual-rate-wrap">
+            <span style="font-size:0.9rem;color:var(--text-dim)">1 USDT =</span>
+            <input class="manual-rate-input" id="manual-rate-input" type="number" placeholder="Ej: 1250" min="1">
+            <span style="font-size:0.9rem;color:var(--text-dim)">ARS</span>
+            <button class="btn-apply" onclick="applyManualRate()">Aplicar</button>
+            <button class="btn-cancel" style="margin-left:0.25rem" onclick="clearManualRate()">Usar automática</button>
+          </div>
+        </div>
+
+        <div class="pricing-panel">
+          <div class="pricing-panel-title">Simulador de precio</div>
+          <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:1rem;line-height:1.6">Calculá cuánto quedaría un producto en pesos con la cotización actual.</p>
+          <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
+            <div style="display:flex;flex-direction:column;gap:0.3rem">
+              <span style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim)">Precio en USD</span>
+              <input class="form-input" id="sim-usd" type="number" placeholder="Ej: 25" style="width:130px" oninput="updateSimulator()">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.3rem">
+              <span style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim)">Margen (%)</span>
+              <input class="form-input" id="sim-margin" type="number" placeholder="Ej: 40" style="width:110px" oninput="updateSimulator()">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.3rem;margin-top:auto">
+              <span style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim)">Precio final ARS</span>
+              <div style="font-family:'Unbounded',sans-serif;font-size:1.3rem;font-weight:900;color:var(--accent)" id="sim-result">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AJUSTES -->
+      <div class="admin-section" id="tab-ajustes">
+        <p class="section-intro">Configuración del panel de administración.</p>
+        <div style="max-width:420px">
+          <div class="form-field" style="margin-bottom:1.25rem"><label class="form-label">Contraseña actual</label><input class="form-input" id="s-oldpass" type="password" placeholder="Contraseña actual"></div>
+          <div class="form-field" style="margin-bottom:1.25rem"><label class="form-label">Nueva contraseña</label><input class="form-input" id="s-newpass" type="password" placeholder="Mínimo 6 caracteres"></div>
+          <div class="form-field" style="margin-bottom:1.75rem"><label class="form-label">Confirmar nueva contraseña</label><input class="form-input" id="s-confirmpass" type="password" placeholder="Repetir contraseña"></div>
+          <button class="btn-save" onclick="changeAdminPass()">Cambiar contraseña</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="product-modal" onclick="closeModalOutside(event,'product-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="prod-modal-title">Nuevo producto</div>
+      <button class="modal-close" onclick="closeModal('product-modal')">×</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-field full"><label class="form-label">Nombre *</label><input class="form-input" id="f-name" type="text" placeholder="Ej: Vaporizador Dry Herb Pro"></div>
+      <div class="form-field"><label class="form-label">Categoría</label><select class="form-select" id="f-category"><option value="vaporizadores">Vaporizadores</option><option value="accesorios">Accesorios</option><option value="bienestar">CBD & Bienestar</option><option value="papeles">Papeles & Filtros</option><option value="almacenamiento">Almacenamiento</option></select></div>
+      <div class="form-field"><label class="form-label">Ícono (emoji)</label><input class="form-input" id="f-icon" type="text" placeholder="💨" maxlength="4"></div>
+      <div class="form-field full">
+        <label class="form-label">Imagen del producto</label>
+        <div class="img-upload-wrap">
+          <div class="img-preview-box" onclick="document.getElementById('f-img-input').click()">
+            <div class="img-preview-placeholder" id="f-img-placeholder"><span>📷</span><p>Click para subir imagen</p></div>
+            <img id="f-img-preview" src="" style="display:none" alt="preview">
+          </div>
+          <div class="img-upload-bar" id="f-img-bar"><div class="img-upload-bar-inner" id="f-img-bar-inner"></div></div>
+          <div class="img-upload-btn-row">
+            <button type="button" class="img-upload-btn" onclick="document.getElementById('f-img-input').click()">📁 Seleccionar imagen</button>
+            <button type="button" class="img-remove-btn" id="f-img-remove" onclick="removeProductImage()">✕ Quitar</button>
+          </div>
+          <input type="file" id="f-img-input" class="img-upload-input" accept="image/*" onchange="handleImageSelect(this)">
+          <input type="hidden" id="f-img-url" value="">
+        </div>
+      </div>
+      <div class="form-field"><label class="form-label">Precio en USD *</label><input class="form-input" id="f-usd" type="number" placeholder="Ej: 25.00" min="0" step="0.01" oninput="updateModalPreview()"></div>
+      <div class="form-field"><label class="form-label">Margen de ganancia (%) *</label><input class="form-input" id="f-margin" type="number" placeholder="Ej: 40" min="0" max="999" oninput="updateModalPreview()"></div>
+      <div class="form-field full">
+        <label class="form-label">Precio final en ARS (calculado)</label>
+        <div class="price-preview">
+          <span class="price-preview-label">Con cotización actual</span>
+          <span class="price-preview-val" id="modal-price-preview">—</span>
+        </div>
+      </div>
+      <div class="form-field"><label class="form-label">Stock *</label><input class="form-input" id="f-stock" type="number" placeholder="10" min="0"></div>
+      <div class="form-field"><label class="form-label">Badge</label><input class="form-input" id="f-badge" type="text" placeholder="Ej: Oferta, Nuevo..."></div>
+      <div class="form-field"><label class="form-label">¿Es oferta?</label><select class="form-select" id="f-oferta"><option value="no">No</option><option value="si">Sí</option></select></div>
+      <div class="form-field full"><label class="form-label">Descripción</label><textarea class="form-textarea" id="f-desc" placeholder="Breve descripción..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('product-modal')">Cancelar</button>
+      <button class="btn-save" onclick="saveProduct()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- USER MODAL -->
+<div class="modal-overlay" id="user-modal" onclick="closeModalOutside(event,'user-modal')">
+  <div class="modal narrow">
+    <div class="modal-header">
+      <div class="modal-title" id="user-modal-title">Crear usuario</div>
+      <button class="modal-close" onclick="closeModal('user-modal')">×</button>
+    </div>
+    <div class="form-field" style="margin-bottom:1rem"><label class="form-label">Nombre completo</label><input class="form-input" id="u-fullname" type="text" placeholder="Ej: Carlos López"></div>
+    <div class="form-field" style="margin-bottom:1rem"><label class="form-label">Usuario (sin espacios) *</label><input class="form-input" id="u-username" type="text" placeholder="Ej: carloslopez" oninput="this.value=this.value.replace(/\s/g,'').toLowerCase()"></div>
+    <div class="form-field" style="margin-bottom:0.5rem"><label class="form-label">Contraseña *</label><input class="form-input" id="u-password" type="text" placeholder="Ej: larra2025"></div>
+    <button style="background:transparent;border:none;color:var(--accent);font-size:0.78rem;cursor:pointer;margin-bottom:1rem;padding:0" onclick="generatePass()">⟳ Generar contraseña automática</button>
+    <div class="creds-box" id="creds-box">
+      <div class="creds-title">Credenciales generadas</div>
+      <div class="creds-row"><span class="creds-key">Usuario</span><span class="creds-val" id="creds-user-show"></span></div>
+      <div class="creds-row"><span class="creds-key">Contraseña</span><span class="creds-val" id="creds-pass-show"></span></div>
+      <div class="creds-note">⚠️ Anotá estas credenciales antes de cerrar. Compartíselas al cliente por WhatsApp o email.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('user-modal')">Cancelar</button>
+      <button class="btn-save" onclick="saveUser()">Crear usuario</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCartDrawer()"></div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <div class="cart-title">Tu pedido</div>
+    <button class="cart-close" onclick="closeCartDrawer()">×</button>
+  </div>
+  <div class="cart-body" id="cart-body"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total estimado</span>
+      <span class="cart-total-val" id="cart-total-val">$0</span>
+    </div>
+    <button class="btn-checkout" id="btn-checkout" onclick="openCheckout()" disabled>Confirmar pedido →</button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkout-modal" onclick="closeModalOutside(event,'checkout-modal')">
+  <div class="modal wide" id="checkout-modal-inner">
+
+    <!-- STEP 1: form -->
+    <div id="checkout-step-form">
+      <div class="modal-header">
+        <div class="modal-title">Confirmar pedido</div>
+        <button class="modal-close" onclick="closeModal('checkout-modal')">×</button>
+      </div>
+
+      <div class="checkout-section-title">Resumen del pedido</div>
+      <div id="checkout-summary-items"></div>
+      <div class="order-total-row">
+        <span class="order-total-label">Total</span>
+        <span class="order-total-val" id="checkout-total-display">—</span>
+      </div>
+
+      <div class="checkout-section-title">Tus datos</div>
+      <div class="form-grid">
+        <div class="form-field full"><label class="form-label">Nombre completo *</label><input class="form-input" id="co-name" type="text" placeholder="Ej: Carlos López"></div>
+        <div class="form-field"><label class="form-label">Teléfono (WhatsApp) *</label><input class="form-input" id="co-phone" type="tel" placeholder="Ej: 2964123456"></div>
+        <div class="form-field"><label class="form-label">Dirección de envío *</label><input class="form-input" id="co-address" type="text" placeholder="Calle, número, ciudad"></div>
+        <div class="form-field full"><label class="form-label">Notas / comentarios</label><textarea class="form-textarea" id="co-notes" placeholder="Instrucciones especiales, referencias..." style="min-height:70px"></textarea></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal('checkout-modal')">Cancelar</button>
+        <button class="btn-save" onclick="submitOrder()">Enviar pedido →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: success -->
+    <div id="checkout-step-success" style="display:none">
+      <div class="success-screen">
+        <div class="success-icon">✅</div>
+        <div class="success-title">¡Pedido enviado!</div>
+        <p class="success-sub">Tu pedido fue recibido. En breve nos contactamos con vos para coordinar el pago y la entrega.</p>
+        <div class="success-btns">
+          <button class="btn-wa" id="btn-wa-client" onclick="openClientWA()">
+            <span>💬</span> Escribinos por WhatsApp
+          </button>
+          <button class="btn-close-success" onclick="closeModal('checkout-modal');resetCart()">Volver al catálogo</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// SUPABASE INIT
+// ══════════════════════════════════════════════
+const SUPA_URL = 'https://tpmisswpmgeuqqaksnmo.supabase.co';
+const SUPA_KEY = 'sb_publishable_FCpgKx3XFZLDqIIq1F5C_g_uPDG9AlK';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let ADMIN_PASSWORD = 'larra2025';
+let currentUser = null, isAdmin = false;
+let editingProductId = null, editingUserId = null, toastTimer;
+let cart = [];
+let orders = [];
+let users = [];
+let products = [];
+const OWNER_WA = '542964416768';
+
+let usdtRate = null, appliedRate = null, manualRate = null;
+let rateLastUpdated = null, rateStatus = 'loading';
+
+const calcARS = (usd, margin) => {
+  if (!appliedRate || !usd) return null;
+  return usd * appliedRate * (1 + (margin || 0) / 100);
+};
+const fmt = n => '$' + Math.round(n).toLocaleString('es-AR');
+const fmtUSD = n => 'U$D ' + parseFloat(n).toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2});
+const todayStr = () => new Date().toLocaleDateString('es-AR');
+const nowStr = () => new Date().toLocaleString('es-AR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+// ══════════════════════════════════════════════
+// LOADING
+// ══════════════════════════════════════════════
+function showLoading(msg) {
+  let el = document.getElementById('app-loading');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'app-loading';
+    el.style.cssText = 'position:fixed;inset:0;background:rgba(10,15,10,0.95);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;';
+    el.innerHTML = '<div style="width:36px;height:36px;border:3px solid #1f2f1f;border-top-color:#7dff6b;border-radius:50%;animation:spin 0.7s linear infinite"></div><div id="loading-msg" style="font-family:Unbounded,sans-serif;font-size:0.72rem;color:#7dff6b;letter-spacing:0.1em">' + msg + '</div>';
+    document.body.appendChild(el);
+  } else {
+    document.getElementById('loading-msg').textContent = msg;
+    el.style.display = 'flex';
+  }
+}
+function hideLoading() {
+  const el = document.getElementById('app-loading');
+  if (el) el.style.display = 'none';
+}
+
+// ══════════════════════════════════════════════
+// DB — PRODUCTS
+// ══════════════════════════════════════════════
+async function dbLoadProducts() {
+  const { data, error } = await sb.from('products').select('*').order('id');
+  if (error) { console.error('loadProducts:', error); return; }
+  products = (data || []).map(p => ({
+    id: p.id,
+    name: p.name,
+    category: p.category,
+    icon: p.icon,
+    desc: p.description,
+    usd: parseFloat(p.price_usd),
+    margin: parseFloat(p.margin),
+    stock: p.stock,
+    active: p.active,
+    oferta: p.is_offer,
+    badge: p.badge,
+    imageUrl: p.image_url || null
+  }));
+}
+
+async function dbSaveProduct(data, id) {
+  const row = {
+    name: data.name,
+    category: data.category,
+    icon: data.icon,
+    description: data.desc,
+    price_usd: data.usd,
+    margin: data.margin,
+    stock: data.stock,
+    active: data.active !== false,
+    is_offer: data.oferta || false,
+    badge: data.badge || null,
+    image_url: data.imageUrl || null
+  };
+  if (id) {
+    const { error } = await sb.from('products').update(row).eq('id', id);
+    if (error) throw error;
+    return id;
+  } else {
+    const { data: ins, error } = await sb.from('products').insert(row).select().single();
+    if (error) throw error;
+    return ins.id;
+  }
+}
+
+async function dbDeleteProduct(id) {
+  const { error } = await sb.from('products').delete().eq('id', id);
+  if (error) throw error;
+}
+
+async function dbUpdateProductField(id, fields) {
+  const { error } = await sb.from('products').update(fields).eq('id', id);
+  if (error) throw error;
+}
+
+// ══════════════════════════════════════════════
+// DB — CLIENTS
+// ══════════════════════════════════════════════
+async function dbLoadUsers() {
+  const { data, error } = await sb.from('clients').select('*').order('id');
+  if (error) { console.error('loadUsers:', error); return; }
+  users = (data || []).map(u => ({
+    id: u.id,
+    username: u.username,
+    password: u.password,
+    fullname: u.full_name,
+    createdAt: u.created_at ? new Date(u.created_at).toLocaleDateString('es-AR') : '—',
+    lastLogin: u.last_login ? new Date(u.last_login).toLocaleDateString('es-AR') : '—',
+    active: u.active
+  }));
+}
+
+async function dbSaveUser(data, id) {
+  const row = { username: data.username, password: data.password, full_name: data.fullname, active: true };
+  if (id) {
+    const { error } = await sb.from('clients').update(row).eq('id', id);
+    if (error) throw error;
+  } else {
+    const { error } = await sb.from('clients').insert(row);
+    if (error) throw error;
+  }
+}
+
+async function dbDeleteUser(id) {
+  const { error } = await sb.from('clients').delete().eq('id', id);
+  if (error) throw error;
+}
+
+async function dbUpdateLastLogin(id) {
+  await sb.from('clients').update({ last_login: new Date().toISOString() }).eq('id', id);
+}
+
+// ══════════════════════════════════════════════
+// DB — ORDERS
+// ══════════════════════════════════════════════
+async function dbLoadOrders() {
+  const { data, error } = await sb.from('orders').select('*').order('created_at', { ascending: false });
+  if (error) { console.error('loadOrders:', error); return; }
+  orders = (data || []).map(o => ({
+    id: o.order_code,
+    dbId: o.id,
+    date: new Date(o.created_at).toLocaleString('es-AR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    client: o.client_name,
+    phone: o.client_phone,
+    address: o.client_address,
+    notes: o.notes,
+    items: o.items,
+    total: parseFloat(o.total_ars),
+    status: o.status
+  }));
+}
+
+async function dbSaveOrder(order) {
+  const row = {
+    order_code: order.id,
+    client_name: order.client,
+    client_phone: order.phone,
+    client_address: order.address,
+    notes: order.notes || '',
+    items: order.items,
+    total_ars: order.total,
+    status: 'pending'
+  };
+  const { error } = await sb.from('orders').insert(row);
+  if (error) throw error;
+}
+
+async function dbUpdateOrderStatus(orderCode, status) {
+  const { error } = await sb.from('orders').update({ status }).eq('order_code', orderCode);
+  if (error) throw error;
+}
+
+// ══════════════════════════════════════════════
+// DB — SETTINGS
+// ══════════════════════════════════════════════
+async function dbLoadSettings() {
+  const { data } = await sb.from('settings').select('*');
+  if (!data) return;
+  for (const row of data) {
+    if (row.key === 'admin_password') ADMIN_PASSWORD = row.value;
+    if (row.key === 'manual_rate' && row.value) manualRate = parseFloat(row.value) || null;
+  }
+}
+
+async function dbSaveSetting(key, value) {
+  const { error } = await sb.from('settings').upsert({ key, value: String(value) }, { onConflict: 'key' });
+  if (error) console.error('saveSetting:', error);
+}
+
+// ══════════════════════════════════════════════
+// EXCHANGE RATE
+// ══════════════════════════════════════════════
+async function fetchRate(manual) {
+  if (manual) {
+    const btn = document.getElementById('btn-refresh');
+    if (btn) btn.classList.add('spinning');
+  }
+  try {
+    const res = await fetch('https://criptoya.com/api/usdt/ars/1', { cache: 'no-store' });
+    if (!res.ok) throw new Error('fail');
+    const data = await res.json();
+    let prices = Object.values(data).map(x => parseFloat(x.ask)).filter(v => !isNaN(v) && v > 0);
+    if (!prices.length) throw new Error('no prices');
+    prices.sort((a, b) => a - b);
+    const mid = Math.floor(prices.length / 2);
+    usdtRate = prices.length % 2 === 0 ? (prices[mid - 1] + prices[mid]) / 2 : prices[mid];
+    rateLastUpdated = new Date();
+    rateStatus = 'ok';
+  } catch (e) {
+    try {
+      const res2 = await fetch('https://api.bluelytics.com.ar/v2/latest', { cache: 'no-store' });
+      if (res2.ok) {
+        const d2 = await res2.json();
+        usdtRate = parseFloat(d2.blue.value_sell) * 0.985;
+        rateLastUpdated = new Date();
+        rateStatus = 'ok';
+      } else throw new Error();
+    } catch {
+      rateStatus = usdtRate ? 'stale' : 'error';
+    }
+  }
+  if (!manualRate && usdtRate) appliedRate = usdtRate;
+  else if (manualRate) appliedRate = manualRate;
+  updateRateUI();
+  renderStore(products);
+  if (isAdmin) { renderAdminTable(products); renderDashboard(); updateModalPreview(); }
+  const btn = document.getElementById('btn-refresh');
+  if (btn) btn.classList.remove('spinning');
+}
+
+function applyManualRate() {
+  const val = parseFloat(document.getElementById('manual-rate-input').value);
+  if (!val || val < 1) { showToast('Ingresá una cotización válida', true); return; }
+  manualRate = val; appliedRate = val;
+  dbSaveSetting('manual_rate', val);
+  updateRateUI(); renderStore(products);
+  if (isAdmin) renderAdminTable(products);
+  showToast('Cotización manual aplicada: ' + fmt(val));
+}
+
+function clearManualRate() {
+  manualRate = null; appliedRate = usdtRate || null;
+  document.getElementById('manual-rate-input').value = '';
+  dbSaveSetting('manual_rate', '');
+  updateRateUI(); renderStore(products);
+  if (isAdmin) renderAdminTable(products);
+  showToast('Usando cotización automática');
+}
+
+function updateRateUI() {
+  const dotClass = rateStatus === 'ok' ? '' : rateStatus === 'stale' ? ' stale' : ' error';
+  const rateStr = appliedRate ? fmt(appliedRate) : '—';
+  const mktStr = usdtRate ? fmt(usdtRate) : '—';
+  const timeStr = rateLastUpdated ? rateLastUpdated.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }) : '—';
+  const sourceStr = manualRate ? 'Cotización manual' : (rateStatus === 'ok' ? 'CriptoYa (automática)' : rateStatus === 'stale' ? 'Última conocida' : 'Sin cotización');
+  const dot = document.getElementById('rate-dot');
+  const barVal = document.getElementById('rate-bar-val');
+  const barTime = document.getElementById('rate-bar-time');
+  if (dot) dot.className = 'rate-dot' + dotClass;
+  if (barVal) barVal.textContent = rateStr;
+  if (barTime) barTime.textContent = rateLastUpdated ? 'Actualizado ' + timeStr : (rateStatus === 'error' ? 'Error' : 'Cargando...');
+  const mktEl = document.getElementById('admin-rate-market');
+  const applEl = document.getElementById('admin-rate-applied');
+  const timeEl = document.getElementById('admin-rate-time');
+  const srcEl = document.getElementById('admin-rate-source');
+  if (mktEl) { mktEl.textContent = mktStr; mktEl.className = 'pricing-big' + (rateStatus === 'error' ? ' loading' : ''); }
+  if (applEl) applEl.textContent = rateStr;
+  if (timeEl) timeEl.textContent = rateLastUpdated ? 'Actualizado ' + timeStr : (rateStatus === 'error' ? 'No se pudo obtener' : '—');
+  if (srcEl) srcEl.textContent = sourceStr;
+  const mi = document.getElementById('manual-rate-input');
+  if (mi && manualRate) mi.value = manualRate;
+  updateSimulator();
+}
+
+function updateSimulator() {
+  const usd = parseFloat(document.getElementById('sim-usd') && document.getElementById('sim-usd').value);
+  const margin = parseFloat(document.getElementById('sim-margin') && document.getElementById('sim-margin').value) || 0;
+  const res = document.getElementById('sim-result');
+  if (!res) return;
+  if (!appliedRate || isNaN(usd)) { res.textContent = '—'; return; }
+  res.textContent = fmt(usd * appliedRate * (1 + margin / 100));
+}
+
+setInterval(() => fetchRate(false), 5 * 60 * 1000);
+
+// ══════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════
+function switchLoginTab(tab, btn) {
+  document.querySelectorAll('.ltab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.ltab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('ltab-' + tab).classList.add('active');
+  document.getElementById('client-error').classList.remove('show');
+  document.getElementById('admin-error').classList.remove('show');
+}
+
+async function clientLogin() {
+  const u = document.getElementById('cl-user').value.trim().toLowerCase();
+  const p = document.getElementById('cl-pass').value;
+  const user = users.find(x => x.username === u && x.password === p && x.active);
+  if (!user) { document.getElementById('client-error').classList.add('show'); return; }
+  dbUpdateLastLogin(user.id);
+  user.lastLogin = todayStr();
+  currentUser = user; isAdmin = false; enterApp();
+}
+
+function adminLogin() {
+  const p = document.getElementById('adm-pass').value;
+  if (p !== ADMIN_PASSWORD) { document.getElementById('admin-error').classList.add('show'); return; }
+  currentUser = { username: 'admin', fullname: 'Administrador' };
+  isAdmin = true; enterApp();
+}
+
+function enterApp() {
+  document.getElementById('login-screen').classList.remove('active');
+  document.getElementById('app-view').classList.add('active');
+  document.getElementById('user-chip-name').textContent = currentUser.fullname || currentUser.username;
+  document.getElementById('admin-btn').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('cart-btn-wrap').style.display = isAdmin ? 'none' : 'block';
+  fetchRate(false);
+  if (isAdmin) showAdminView(); else renderStore(products);
+}
+
+function doLogout() {
+  currentUser = null; isAdmin = false;
+  resetCart(); closeCartDrawer();
+  document.getElementById('app-view').classList.remove('active');
+  document.getElementById('login-screen').classList.add('active');
+  document.getElementById('store-view').classList.add('active');
+  document.getElementById('admin-view').classList.remove('active');
+  ['cl-user', 'cl-pass', 'adm-pass'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('client-error').classList.remove('show');
+  document.getElementById('admin-error').classList.remove('show');
+}
+
+// ══════════════════════════════════════════════
+// STORE
+// ══════════════════════════════════════════════
+function renderStore(list) {
+  const visible = list.filter(p => p.active);
+  document.getElementById('product-count').textContent = visible.length + ' producto' + (visible.length !== 1 ? 's' : '');
+  document.getElementById('product-grid').innerHTML = visible.map((p, i) => {
+    const ars = calcARS(p.usd, p.margin);
+    let badgeHtml = '';
+    if (p.stock === 0) badgeHtml = '<div class="card-badge out">Sin stock</div>';
+    else if (p.stock <= 3) badgeHtml = '<div class="card-badge low">Últimas ' + p.stock + '</div>';
+    else if (p.badge) badgeHtml = '<div class="card-badge">' + p.badge + '</div>';
+    const priceStr = ars ? fmt(ars) : 'Cotizando...';
+    return '<div class="card" style="animation-delay:' + (i * 0.035) + 's">' +
+      badgeHtml +
+      '<div class="card-img">' + (p.imageUrl ? '<img src="' + p.imageUrl + '" alt="' + p.name + '" loading="lazy">' : '<span class="product-icon">' + p.icon + '</span>') + '</div>' +
+      '<div class="card-body">' +
+        '<div class="card-category">' + p.category.charAt(0).toUpperCase() + p.category.slice(1) + '</div>' +
+        '<div class="card-name">' + p.name + '</div>' +
+        '<div class="card-desc">' + p.desc + '</div>' +
+        '<div class="card-footer">' +
+          '<div><span class="card-price">' + priceStr + '</span></div>' +
+          '<button class="add-btn" ' + (p.stock === 0 ? 'disabled' : '') + ' onclick="addToCart(event,' + p.id + ')">+</button>' +
+        '</div>' +
+      '</div></div>';
+  }).join('');
+}
+
+function filterProducts(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const f = cat === 'todos' ? products : cat === 'ofertas' ? products.filter(p => p.oferta) : products.filter(p => p.category === cat);
+  renderStore(f);
+}
+
+function showStore() {
+  document.getElementById('store-view').classList.add('active');
+  document.getElementById('admin-view').classList.remove('active');
+  document.getElementById('admin-btn').textContent = '⚙ Admin';
+  renderStore(products);
+}
+
+// ══════════════════════════════════════════════
+// CART
+// ══════════════════════════════════════════════
+function addToCart(e, productId) {
+  e.stopPropagation();
+  const p = products.find(x => x.id === productId);
+  if (!p || p.stock === 0) return;
+  const existing = cart.find(c => c.productId === productId);
+  if (existing && existing.qty >= p.stock) { showToast('No hay más stock', true); return; }
+  if (existing) existing.qty++;
+  else cart.push({ productId, qty: 1 });
+  updateCartCount();
+  showToast(p.icon + ' ' + p.name + ' agregado');
+}
+
+function updateCartCount() {
+  const total = cart.reduce((a, c) => a + c.qty, 0);
+  document.getElementById('cart-count').textContent = total;
+  const btn = document.getElementById('btn-checkout');
+  if (btn) btn.disabled = total === 0;
+}
+
+function cartTotal() {
+  return cart.reduce((a, c) => {
+    const p = products.find(x => x.id === c.productId);
+    return a + (calcARS(p.usd, p.margin) || 0) * c.qty;
+  }, 0);
+}
+
+function openCartDrawer() { renderCartDrawer(); document.getElementById('cart-drawer').classList.add('open'); document.getElementById('cart-overlay').classList.add('open'); }
+function closeCartDrawer() { document.getElementById('cart-drawer').classList.remove('open'); document.getElementById('cart-overlay').classList.remove('open'); }
+
+function renderCartDrawer() {
+  const body = document.getElementById('cart-body');
+  const totalEl = document.getElementById('cart-total-val');
+  const btnCO = document.getElementById('btn-checkout');
+  if (!cart.length) {
+    body.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛒</div><span>Tu carrito está vacío</span></div>';
+    if (totalEl) totalEl.textContent = '$0';
+    if (btnCO) btnCO.disabled = true;
+    return;
+  }
+  body.innerHTML = cart.map(c => {
+    const p = products.find(x => x.id === c.productId);
+    if (!p) return '';
+    const ars = calcARS(p.usd, p.margin);
+    return '<div class="cart-item">' +
+      '<div class="cart-item-icon">' + p.icon + '</div>' +
+      '<div class="cart-item-info"><div class="cart-item-name">' + p.name + '</div><div class="cart-item-price">' + (ars ? fmt(ars) : '—') + ' c/u</div></div>' +
+      '<div class="cart-item-controls">' +
+        '<button class="qty-btn" onclick="changeQty(' + p.id + ',-1)">−</button>' +
+        '<span class="qty-val">' + c.qty + '</span>' +
+        '<button class="qty-btn" onclick="changeQty(' + p.id + ',1)">+</button>' +
+        '<button class="cart-item-remove" onclick="removeFromCart(' + p.id + ')">✕</button>' +
+      '</div></div>';
+  }).join('');
+  const total = cartTotal();
+  if (totalEl) totalEl.textContent = total ? fmt(total) : '—';
+  if (btnCO) btnCO.disabled = false;
+}
+
+function changeQty(productId, delta) {
+  const item = cart.find(c => c.productId === productId);
+  if (!item) return;
+  const p = products.find(x => x.id === productId);
+  item.qty += delta;
+  if (item.qty > p.stock) { item.qty = p.stock; showToast('Máximo stock', true); }
+  if (item.qty <= 0) cart = cart.filter(c => c.productId !== productId);
+  updateCartCount(); renderCartDrawer();
+}
+
+function removeFromCart(productId) { cart = cart.filter(c => c.productId !== productId); updateCartCount(); renderCartDrawer(); }
+function resetCart() { cart = []; updateCartCount(); }
+
+// ══════════════════════════════════════════════
+// CHECKOUT
+// ══════════════════════════════════════════════
+function openCheckout() {
+  if (!cart.length) return;
+  const itemsEl = document.getElementById('checkout-summary-items');
+  const totalEl = document.getElementById('checkout-total-display');
+  itemsEl.innerHTML = cart.map(c => {
+    const p = products.find(x => x.id === c.productId);
+    const ars = calcARS(p.usd, p.margin);
+    return '<div class="order-summary-item"><span class="order-summary-name">' + p.icon + ' ' + p.name + ' × ' + c.qty + '</span><span class="order-summary-price">' + (ars ? fmt(ars * c.qty) : '—') + '</span></div>';
+  }).join('');
+  totalEl.textContent = fmt(cartTotal());
+  const nameInput = document.getElementById('co-name');
+  if (nameInput && currentUser && currentUser.fullname) nameInput.value = currentUser.fullname;
+  document.getElementById('checkout-step-form').style.display = 'block';
+  document.getElementById('checkout-step-success').style.display = 'none';
+  closeCartDrawer();
+  document.getElementById('checkout-modal').classList.add('open');
+}
+
+async function submitOrder() {
+  const name = document.getElementById('co-name').value.trim();
+  const phone = document.getElementById('co-phone').value.trim();
+  const address = document.getElementById('co-address').value.trim();
+  const notes = document.getElementById('co-notes').value.trim();
+  if (!name || !phone || !address) { showToast('Completá nombre, teléfono y dirección', true); return; }
+  const total = cartTotal();
+  const orderId = 'PED-' + String(Date.now()).slice(-6);
+  const items = cart.map(c => {
+    const p = products.find(x => x.id === c.productId);
+    const ars = calcARS(p.usd, p.margin);
+    return { name: p.name, icon: p.icon, qty: c.qty, priceARS: ars };
+  });
+  const order = { id: orderId, date: nowStr(), client: name, phone, address, notes, items, total, status: 'pending' };
+  try {
+    await dbSaveOrder(order);
+    orders.unshift(order);
+  } catch (e) {
+    console.error('Error guardando pedido:', e);
+    showToast('Error al guardar el pedido', true); return;
+  }
+  var itemsLines = items.map(function(i) { return '  • ' + i.icon + ' ' + i.name + ' × ' + i.qty + ' — ' + (i.priceARS ? fmt(i.priceARS * i.qty) : '?'); }).join('\n');
+  var ownerMsg = '🛒 *NUEVO PEDIDO — ' + orderId + '*\n📅 ' + nowStr() + '\n\n👤 *Cliente:* ' + name + '\n📱 *Teléfono:* ' + phone + '\n📍 *Dirección:* ' + address + (notes ? '\n📝 *Notas:* ' + notes : '') + '\n\n*Productos:*\n' + itemsLines + '\n\n💰 *Total estimado: ' + fmt(total) + '*\n\n_Pendiente de confirmación y pago._';
+  window.open('https://wa.me/' + OWNER_WA + '?text=' + encodeURIComponent(ownerMsg), '_blank');
+  window._lastOrderPhone = phone;
+  window._lastOrderId = orderId;
+  window._lastOrderName = name;
+  document.getElementById('checkout-step-form').style.display = 'none';
+  document.getElementById('checkout-step-success').style.display = 'block';
+}
+
+function openClientWA() {
+  var phone = (window._lastOrderPhone || '').replace(/\D/g, '');
+  var fullPhone = phone.startsWith('54') ? phone : '54' + phone;
+  var msg = 'Hola ' + (window._lastOrderName || '') + '! 👋 Te escribimos de *Logística Larra* para coordinar tu pedido *' + (window._lastOrderId || '') + '*.\n¿Cuándo podemos hablar para arreglar el pago y la entrega?';
+  window.open('https://wa.me/' + fullPhone + '?text=' + encodeURIComponent(msg), '_blank');
+  resetCart();
+}
+
+// ══════════════════════════════════════════════
+// ADMIN ORDERS
+// ══════════════════════════════════════════════
+var currentOrderFilter = 'todos';
+function filterOrders(status) { currentOrderFilter = status; renderOrders(); }
+
+function renderOrders() {
+  var el = document.getElementById('orders-list');
+  if (!el) return;
+  var filtered = currentOrderFilter === 'todos' ? orders : orders.filter(function(o) { return o.status === currentOrderFilter; });
+  if (!filtered.length) {
+    el.innerHTML = '<p style="color:var(--text-dim);padding:2rem 0">No hay pedidos' + (currentOrderFilter !== 'todos' ? ' en este estado' : ' aún') + '.</p>';
+    return;
+  }
+  var labels = { pending: 'Pendiente', confirmed: 'Confirmado', cancelled: 'Cancelado' };
+  el.innerHTML = filtered.map(function(o) {
+    var itemsText = o.items.map(function(i) { return i.icon + ' ' + i.name + ' ×' + i.qty; }).join(', ');
+    var confirmBtn = o.status === 'pending' ? '<button class="btn-edit" onclick="updateOrderStatus(\'' + o.id + '\',\'confirmed\')">Confirmar</button>' : '';
+    var cancelBtn = o.status !== 'cancelled' ? '<button class="btn-del" onclick="updateOrderStatus(\'' + o.id + '\',\'cancelled\')">✕</button>' : '';
+    return '<div class="order-card">' +
+      '<div class="order-card-header"><div><span class="order-id">' + o.id + '</span><span class="order-date" style="margin-left:0.75rem">' + o.date + '</span></div><span class="order-status-badge ' + o.status + '">' + (labels[o.status] || o.status) + '</span></div>' +
+      '<div class="order-client-name">👤 ' + o.client + '</div>' +
+      '<div class="order-meta">📱 ' + o.phone + ' &nbsp;·&nbsp; 📍 ' + o.address + (o.notes ? ' &nbsp;·&nbsp; 📝 ' + o.notes : '') + '</div>' +
+      '<div class="order-items-preview">' + itemsText + '</div>' +
+      '<div class="order-footer-row"><span class="order-total-display">' + fmt(o.total) + '</span>' +
+        '<div class="order-action-btns"><button class="btn-wa" style="padding:0.3rem 0.85rem;font-size:0.62rem" onclick="replyOrderWA(\'' + o.id + '\')">💬 WA</button>' + confirmBtn + cancelBtn + '</div>' +
+      '</div></div>';
+  }).join('');
+}
+
+function replyOrderWA(orderId) {
+  var o = orders.find(function(x) { return x.id === orderId; });
+  if (!o) return;
+  var phone = o.phone.replace(/\D/g, '');
+  var fullPhone = phone.startsWith('54') ? phone : '54' + phone;
+  var msg = 'Hola ' + o.client + '! 👋 Te escribimos de *Logística Larra* por tu pedido *' + o.id + '*. ¿Cuándo coordinamos el pago y la entrega?';
+  window.open('https://wa.me/' + fullPhone + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+async function updateOrderStatus(orderId, status) {
+  try {
+    await dbUpdateOrderStatus(orderId, status);
+    var o = orders.find(function(x) { return x.id === orderId; });
+    if (o) { o.status = status; renderOrders(); renderDashboard(); showToast('Pedido ' + (status === 'confirmed' ? 'confirmado' : 'cancelado')); }
+  } catch (e) { showToast('Error al actualizar', true); }
+}
+
+// ══════════════════════════════════════════════
+// ADMIN
+// ══════════════════════════════════════════════
+function toggleAdmin() { var v = document.getElementById('admin-view').classList.contains('active'); v ? showStore() : showAdminView(); }
+
+function showAdminView() {
+  document.getElementById('store-view').classList.remove('active');
+  document.getElementById('admin-view').classList.add('active');
+  document.getElementById('admin-btn').textContent = '← Tienda';
+  renderDashboard(); renderOrders(); renderAdminTable(products); renderAlerts(); renderUsersTable(users); updateRateUI();
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.admin-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.admin-section').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+function renderDashboard() {
+  var total = products.length, active = products.filter(function(p) { return p.active; }).length;
+  var outStock = products.filter(function(p) { return p.stock === 0; }).length;
+  var lowStock = products.filter(function(p) { return p.stock > 0 && p.stock <= 4; }).length;
+  var totalValUSD = products.reduce(function(a, p) { return a + p.usd * p.stock; }, 0);
+  var totalValARS = products.reduce(function(a, p) { return a + (calcARS(p.usd, p.margin) || 0) * p.stock; }, 0);
+  var totalUsers = users.length, activeUsers = users.filter(function(u) { return u.active; }).length;
+  var totalOrders = orders.length, pendingOrders = orders.filter(function(o) { return o.status === 'pending'; }).length;
+  document.getElementById('stats-grid').innerHTML =
+    '<div class="stat-card"><div class="stat-label">Pedidos</div><div class="stat-value">' + totalOrders + '</div><div class="stat-sub">' + pendingOrders + ' pendiente' + (pendingOrders !== 1 ? 's' : '') + '</div></div>' +
+    '<div class="stat-card"><div class="stat-label">Productos</div><div class="stat-value">' + total + '</div><div class="stat-sub">' + active + ' activos, ' + (total - active) + ' ocultos</div></div>' +
+    '<div class="stat-card"><div class="stat-label">Sin stock</div><div class="stat-value" style="color:var(--danger)">' + outStock + '</div><div class="stat-sub">Requieren reposición</div></div>' +
+    '<div class="stat-card"><div class="stat-label">Stock bajo</div><div class="stat-value" style="color:var(--warning)">' + lowStock + '</div><div class="stat-sub">≤ 4 unidades</div></div>' +
+    '<div class="stat-card"><div class="stat-label">Inventario (USD)</div><div class="stat-value" style="font-size:1.1rem">' + fmtUSD(totalValUSD) + '</div><div class="stat-sub">Costo estimado</div></div>' +
+    '<div class="stat-card"><div class="stat-label">Inventario (ARS)</div><div class="stat-value" style="font-size:1rem">' + (totalValARS ? fmt(totalValARS) : '—') + '</div><div class="stat-sub">Con cotización actual</div></div>' +
+    '<div class="stat-card"><div class="stat-label">Clientes</div><div class="stat-value">' + totalUsers + '</div><div class="stat-sub">' + activeUsers + ' activos</div></div>';
+}
+
+function renderAdminTable(list) {
+  document.getElementById('admin-tbody').innerHTML = list.map(function(p) {
+    var ars = calcARS(p.usd, p.margin);
+    var sb2 = p.stock === 0 ? '<span class="stock-badge out">Sin stock</span>' : p.stock <= 4 ? '<span class="stock-badge low">' + p.stock + ' ud.</span>' : '<span class="stock-badge ok">' + p.stock + ' ud.</span>';
+    return '<tr><td><div class="td-name"><span class="td-icon">' + p.icon + '</span>' + p.name + '</div></td>' +
+      '<td style="color:var(--text-dim)">' + p.category + '</td>' +
+      '<td style="color:var(--accent);font-family:Unbounded,sans-serif;font-size:0.8rem">' + fmtUSD(p.usd) + '</td>' +
+      '<td style="color:var(--text-dim)">' + p.margin + '%</td>' +
+      '<td style="font-weight:500">' + (ars ? fmt(ars) : '—') + '</td>' +
+      '<td>' + sb2 + '</td>' +
+      '<td><button class="toggle-vis ' + (p.active ? 'on' : '') + '" onclick="toggleProductActive(' + p.id + ')"></button></td>' +
+      '<td><div class="row-actions"><button class="btn-edit" onclick="openProductModal(' + p.id + ')">Editar</button><button class="btn-del" onclick="deleteProduct(' + p.id + ')">✕</button></div></td></tr>';
+  }).join('');
+}
+
+function filterTable(q) {
+  renderAdminTable(products.filter(function(p) { return p.name.toLowerCase().includes(q.toLowerCase()) || p.category.toLowerCase().includes(q.toLowerCase()); }));
+}
+
+function renderAlerts() {
+  var alerts = products.filter(function(p) { return p.stock <= 4; }).sort(function(a, b) { return a.stock - b.stock; });
+  if (!alerts.length) { document.getElementById('alert-list-wrap').innerHTML = '<p style="color:var(--text-dim);padding:2rem 0">✓ Todos los productos tienen stock suficiente.</p>'; return; }
+  document.getElementById('alert-list-wrap').innerHTML = '<div class="alert-list">' + alerts.map(function(p) {
+    return '<div class="alert-item ' + (p.stock === 0 ? 'critical' : '') + '"><div><div class="alert-name">' + p.icon + ' ' + p.name + '</div><div class="alert-stock-info">' + (p.stock === 0 ? 'Sin stock disponible' : 'Solo quedan ' + p.stock + ' unidad(es)') + '</div></div><button class="btn-restock" onclick="restockPrompt(' + p.id + ')">+ Reponer stock</button></div>';
+  }).join('') + '</div>';
+}
+
+async function toggleProductActive(id) {
+  var p = products.find(function(x) { return x.id === id; });
+  if (!p) return;
+  try {
+    await dbUpdateProductField(id, { active: !p.active });
+    p.active = !p.active;
+    renderAdminTable(products); renderDashboard();
+    showToast(p.active ? 'Producto activado' : 'Producto ocultado');
+  } catch (e) { showToast('Error al actualizar', true); }
+}
+
+async function deleteProduct(id) {
+  if (!confirm('¿Eliminar este producto?')) return;
+  try {
+    await dbDeleteProduct(id);
+    products = products.filter(function(p) { return p.id !== id; });
+    renderAdminTable(products); renderDashboard(); renderAlerts();
+    showToast('Producto eliminado');
+  } catch (e) { showToast('Error al eliminar', true); }
+}
+
+async function restockPrompt(id) {
+  var p = products.find(function(x) { return x.id === id; });
+  var qty = prompt('¿Cuántas unidades agregar para:\n"' + p.name + '"?\n(Stock actual: ' + p.stock + ')');
+  if (qty && !isNaN(qty) && parseInt(qty) > 0) {
+    var newStock = p.stock + parseInt(qty);
+    try {
+      await dbUpdateProductField(id, { stock: newStock });
+      p.stock = newStock;
+      renderAdminTable(products); renderDashboard(); renderAlerts();
+      showToast('Stock actualizado: ' + p.stock + ' ud.');
+    } catch (e) { showToast('Error al actualizar stock', true); }
+  }
+}
+
+// ══════════════════════════════════════════════
+// USERS
+// ══════════════════════════════════════════════
+function renderUsersTable(list) {
+  document.getElementById('users-tbody').innerHTML = list.map(function(u) {
+    return '<tr><td><strong style="font-family:monospace;color:var(--accent)">' + u.username + '</strong></td><td>' + (u.fullname || '—') + '</td><td style="color:var(--text-dim)">' + u.createdAt + '</td><td style="color:var(--text-dim)">' + (u.lastLogin || '—') + '</td><td><span class="user-status ' + (u.active ? 'active' : 'inactive') + '">' + (u.active ? 'Activo' : 'Inactivo') + '</span></td><td><div class="row-actions"><button class="btn-edit" onclick="toggleUserActive(' + u.id + ')">' + (u.active ? 'Suspender' : 'Activar') + '</button><button class="btn-edit" onclick="openUserModal(' + u.id + ')">Editar</button><button class="btn-del" onclick="deleteUser(' + u.id + ')">✕</button></div></td></tr>';
+  }).join('');
+}
+
+function filterUsers(q) {
+  renderUsersTable(users.filter(function(u) { return u.username.toLowerCase().includes(q.toLowerCase()) || (u.fullname || '').toLowerCase().includes(q.toLowerCase()); }));
+}
+
+async function toggleUserActive(id) {
+  var u = users.find(function(x) { return x.id === id; });
+  if (!u) return;
+  try {
+    await sb.from('clients').update({ active: !u.active }).eq('id', id);
+    u.active = !u.active;
+    renderUsersTable(users); renderDashboard();
+    showToast(u.active ? u.username + ' activado' : u.username + ' suspendido');
+  } catch (e) { showToast('Error al actualizar', true); }
+}
+
+async function deleteUser(id) {
+  if (!confirm('¿Eliminar este usuario?')) return;
+  try {
+    await dbDeleteUser(id);
+    users = users.filter(function(u) { return u.id !== id; });
+    renderUsersTable(users); renderDashboard();
+    showToast('Usuario eliminado');
+  } catch (e) { showToast('Error al eliminar', true); }
+}
+
+// ══════════════════════════════════════════════
+// PRODUCT MODAL
+// ══════════════════════════════════════════════
+function updateModalPreview() {
+  var usdEl = document.getElementById('f-usd');
+  var marginEl = document.getElementById('f-margin');
+  var prev = document.getElementById('modal-price-preview');
+  if (!prev || !usdEl || !marginEl) return;
+  var usd = parseFloat(usdEl.value);
+  var margin = parseFloat(marginEl.value) || 0;
+  if (!appliedRate || isNaN(usd)) { prev.textContent = appliedRate ? 'Ingresá precio USD' : 'Cargando cotización...'; return; }
+  prev.textContent = fmt(usd * appliedRate * (1 + margin / 100));
+}
+
+function openProductModal(id) {
+  editingProductId = id || null;
+  document.getElementById('prod-modal-title').textContent = id ? 'Editar producto' : 'Nuevo producto';
+  if (id) {
+    var p = products.find(function(x) { return x.id === id; });
+    document.getElementById('f-name').value = p.name;
+    document.getElementById('f-category').value = p.category;
+    document.getElementById('f-icon').value = p.icon;
+    document.getElementById('f-usd').value = p.usd;
+    document.getElementById('f-margin').value = p.margin;
+    document.getElementById('f-stock').value = p.stock;
+    document.getElementById('f-badge').value = p.badge || '';
+    document.getElementById('f-oferta').value = p.oferta ? 'si' : 'no';
+    document.getElementById('f-desc').value = p.desc;
+    setImagePreview(p.imageUrl || '');
+  } else {
+    ['f-name', 'f-icon', 'f-badge', 'f-desc'].forEach(function(i) { document.getElementById(i).value = ''; });
+    setImagePreview('');
+    document.getElementById('f-usd').value = '';
+    document.getElementById('f-margin').value = '';
+    document.getElementById('f-stock').value = '';
+    document.getElementById('f-category').value = 'vaporizadores';
+    document.getElementById('f-oferta').value = 'no';
+  }
+  updateModalPreview();
+  document.getElementById('product-modal').classList.add('open');
+}
+
+async function saveProduct() {
+  var name = document.getElementById('f-name').value.trim();
+  var usd = parseFloat(document.getElementById('f-usd').value);
+  var margin = parseFloat(document.getElementById('f-margin').value);
+  var stock = parseInt(document.getElementById('f-stock').value);
+  if (!name || isNaN(usd) || isNaN(margin) || isNaN(stock)) { showToast('Completá nombre, precio USD, margen y stock', true); return; }
+  var data = {
+    name: name, usd: usd, margin: margin, stock: stock,
+    category: document.getElementById('f-category').value,
+    icon: document.getElementById('f-icon').value.trim() || '📦',
+    badge: document.getElementById('f-badge').value.trim() || null,
+    oferta: document.getElementById('f-oferta').value === 'si',
+    desc: document.getElementById('f-desc').value.trim(),
+    active: true
+  };
+  try {
+    if (editingProductId) {
+      // Upload image first if there's a pending file
+      if (_pendingImageFile) {
+        var uploadedUrl = await uploadProductImage(editingProductId);
+        if (uploadedUrl) data.imageUrl = uploadedUrl;
+      }
+      await dbSaveProduct(data, editingProductId);
+      var idx = products.findIndex(function(p) { return p.id === editingProductId; });
+      products[idx] = Object.assign({}, products[idx], data);
+      showToast('Producto actualizado ✓');
+    } else {
+      // Create product first to get ID, then upload image
+      var newId = await dbSaveProduct(data, null);
+      if (_pendingImageFile) {
+        var uploadedUrl = await uploadProductImage(newId);
+        if (uploadedUrl) {
+          data.imageUrl = uploadedUrl;
+          await dbSaveProduct(data, newId);
+        }
+      }
+      products.push(Object.assign({ id: newId }, data));
+      showToast('Producto creado ✓');
+    }
+    closeModal('product-modal');
+    renderAdminTable(products); renderDashboard(); renderAlerts(); renderStore(products);
+  } catch (e) { showToast('Error al guardar: ' + e.message, true); }
+}
+
+// ══════════════════════════════════════════════
+// USER MODAL
+// ══════════════════════════════════════════════
+function openUserModal(id) {
+  editingUserId = id || null;
+  document.getElementById('user-modal-title').textContent = id ? 'Editar usuario' : 'Crear usuario';
+  document.getElementById('creds-box').classList.remove('show');
+  if (id) {
+    var u = users.find(function(x) { return x.id === id; });
+    document.getElementById('u-fullname').value = u.fullname || '';
+    document.getElementById('u-username').value = u.username;
+    document.getElementById('u-password').value = u.password;
+  } else {
+    ['u-fullname', 'u-username', 'u-password'].forEach(function(i) { document.getElementById(i).value = ''; });
+  }
+  document.getElementById('user-modal').classList.add('open');
+}
+
+function generatePass() {
+  var chars = 'abcdefghjkmnpqrstuvwxyz23456789'; var pass = '';
+  for (var i = 0; i < 8; i++) pass += chars[Math.floor(Math.random() * chars.length)];
+  document.getElementById('u-password').value = pass;
+  var uname = document.getElementById('u-username').value || '(ingresá usuario)';
+  document.getElementById('creds-user-show').textContent = uname;
+  document.getElementById('creds-pass-show').textContent = pass;
+  document.getElementById('creds-box').classList.add('show');
+}
+
+async function saveUser() {
+  var username = document.getElementById('u-username').value.trim().toLowerCase();
+  var password = document.getElementById('u-password').value.trim();
+  var fullname = document.getElementById('u-fullname').value.trim();
+  if (!username || !password) { showToast('Usuario y contraseña son obligatorios', true); return; }
+  if (!editingUserId && users.find(function(u) { return u.username === username; })) { showToast('Ese usuario ya existe', true); return; }
+  try {
+    await dbSaveUser({ username: username, password: password, fullname: fullname }, editingUserId);
+    if (editingUserId) {
+      var idx = users.findIndex(function(u) { return u.id === editingUserId; });
+      users[idx] = Object.assign({}, users[idx], { username: username, password: password, fullname: fullname });
+      showToast('Usuario actualizado');
+      closeModal('user-modal');
+    } else {
+      await dbLoadUsers();
+      document.getElementById('creds-user-show').textContent = username;
+      document.getElementById('creds-pass-show').textContent = password;
+      document.getElementById('creds-box').classList.add('show');
+      showToast('Usuario creado — anotá las credenciales', 'warn');
+    }
+    renderUsersTable(users); renderDashboard();
+  } catch (e) { showToast('Error: ' + e.message, true); }
+}
+
+// ══════════════════════════════════════════════
+// ADMIN PASS
+// ══════════════════════════════════════════════
+async function changeAdminPass() {
+  var old = document.getElementById('s-oldpass').value;
+  var nw = document.getElementById('s-newpass').value;
+  var conf = document.getElementById('s-confirmpass').value;
+  if (old !== ADMIN_PASSWORD) { showToast('Contraseña actual incorrecta', true); return; }
+  if (nw.length < 6) { showToast('Mínimo 6 caracteres', true); return; }
+  if (nw !== conf) { showToast('Las contraseñas no coinciden', true); return; }
+  ADMIN_PASSWORD = nw;
+  await dbSaveSetting('admin_password', nw);
+  ['s-oldpass', 's-newpass', 's-confirmpass'].forEach(function(i) { document.getElementById(i).value = ''; });
+  showToast('Contraseña actualizada y guardada ✓');
+}
+
+// ══════════════════════════════════════════════
+// MODALS & TOAST
+// ══════════════════════════════════════════════
+function closeModal(id) { document.getElementById(id).classList.remove('open'); editingProductId = null; editingUserId = null; }
+function closeModalOutside(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type === true ? ' error' : type === 'warn' ? ' warn' : '');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2600);
+}
+
+
+// ══════════════════════════════════════════════
+// IMAGE UPLOAD — Supabase Storage
+// ══════════════════════════════════════════════
+var _pendingImageFile = null;
+
+function setImagePreview(url) {
+  var preview = document.getElementById('f-img-preview');
+  var placeholder = document.getElementById('f-img-placeholder');
+  var removeBtn = document.getElementById('f-img-remove');
+  var urlInput = document.getElementById('f-img-url');
+  if (url) {
+    preview.src = url;
+    preview.style.display = 'block';
+    placeholder.style.display = 'none';
+    removeBtn.style.display = 'inline-flex';
+    urlInput.value = url;
+  } else {
+    preview.src = '';
+    preview.style.display = 'none';
+    placeholder.style.display = 'flex';
+    removeBtn.style.display = 'none';
+    urlInput.value = '';
+    _pendingImageFile = null;
+  }
+}
+
+function removeProductImage() {
+  setImagePreview('');
+}
+
+function handleImageSelect(input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showToast('La imagen no puede superar 5MB', true); return; }
+  _pendingImageFile = file;
+  var reader = new FileReader();
+  reader.onload = function(e) { setImagePreview(e.target.result); };
+  reader.readAsDataURL(file);
+  // Reset input so same file can be re-selected
+  input.value = '';
+}
+
+async function uploadProductImage(productId) {
+  if (!_pendingImageFile) return document.getElementById('f-img-url').value || null;
+  var ext = _pendingImageFile.name.split('.').pop().toLowerCase();
+  var path = 'products/' + productId + '.' + ext;
+  var bar = document.getElementById('f-img-bar');
+  var barInner = document.getElementById('f-img-bar-inner');
+  bar.classList.add('active');
+  barInner.style.width = '30%';
+  try {
+    var { error } = await sb.storage.from('product-images').upload(path, _pendingImageFile, { upsert: true, contentType: _pendingImageFile.type });
+    if (error) throw error;
+    barInner.style.width = '80%';
+    var { data } = sb.storage.from('product-images').getPublicUrl(path);
+    barInner.style.width = '100%';
+    setTimeout(function() { bar.classList.remove('active'); barInner.style.width = '0%'; }, 500);
+    _pendingImageFile = null;
+    return data.publicUrl + '?t=' + Date.now();
+  } catch (e) {
+    bar.classList.remove('active');
+    showToast('Error al subir imagen: ' + e.message, true);
+    return null;
+  }
+}
+
+// ══════════════════════════════════════════════
+// INIT — Carga todo desde Supabase al arrancar
+// ══════════════════════════════════════════════
+async function initApp() {
+  showLoading('Conectando...');
+  try {
+    await dbLoadSettings();
+    showLoading('Cargando productos...');
+    await dbLoadProducts();
+    showLoading('Cargando clientes...');
+    await dbLoadUsers();
+    showLoading('Cargando pedidos...');
+    await dbLoadOrders();
+    hideLoading();
+  } catch (e) {
+    console.error('Init error:', e);
+    hideLoading();
+    showToast('Error de conexión — verificá que corriste el SQL en Supabase', true);
+  }
+}
+
+initApp();
+
+</script>
+</body>
+</html>
