@@ -1,0 +1,136 @@
+════════════════════════════════════════════════════════════════════════════════
+   ORIGEN0 — ARABIAN COLLECTION
+   INSTRUCCIONES RÁPIDAS DE INICIO
+════════════════════════════════════════════════════════════════════════════════
+
+📦 ARCHIVOS QUE RECIBISTE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ index.html              - Página web principal
+✅ perfumes.json           - Base de datos de perfumes
+✅ README.md               - Documentación completa
+✅ PLANTILLA_AGREGAR_PERFUMES.md - Cómo agregar perfumes
+✅ INSTRUCCIONES_RÁPIDAS.txt - Este archivo
+
+
+🚀 PASO 1: ABRIR LOCALMENTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Opción A (Más fácil):
+  1. Descarga los archivos en una carpeta
+  2. Abre una terminal/cmd en esa carpeta
+  3. Ejecuta: python -m http.server 8000
+  4. Abre tu navegador: http://localhost:8000
+
+Opción B (Sin terminal):
+  1. Si tienes Python: doble clic en index.html
+  2. Nota: Los filtros podrían no funcionar por restricciones CORS
+  3. Mejor usar opción A
+
+
+📱 PASO 2: PERSONALIZAR CONTENIDO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Editar datos de perfumes:
+  ✏️ Abre perfumes.json con cualquier editor
+  ✏️ Modifica nombres, notas, categorías, etc.
+  ✏️ Guarda (Ctrl+S)
+  ✏️ Recarga el navegador (F5)
+
+Agregar nuevos perfumes:
+  📖 Lee PLANTILLA_AGREGAR_PERFUMES.md
+  ✏️ Copia la plantilla
+  ✏️ Pega en perfumes.json
+  ✏️ Rellena tus datos
+
+Cambiar colores/diseño:
+  🎨 Abre index.html con editor
+  🎨 Busca :root { en la sección <style>
+  🎨 Modifica los valores HEX de los colores
+  🎨 Guarda y recarga
+
+
+📸 PASO 3: AGREGAR IMÁGENES REALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Crea una carpeta llamada "images" (al lado de index.html)
+  2. Descarga fotos de tus perfumes (JPG o PNG)
+  3. Renómbra según formato: armaf-green-irish-tweed.jpg
+  4. En perfumes.json, actualiza el campo "image":
+     "image": "/images/nombre-del-archivo.jpg"
+  5. ¡Listo! Las imágenes aparecerán automáticamente
+
+
+🌐 PASO 4: DESPLEGAR EN VERCEL (Gratis)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Sube todos los archivos a GitHub (crea un repo)
+  2. Ve a https://vercel.com
+  3. Login con GitHub
+  4. "New Project" → Selecciona tu repo
+  5. Build Command: (dejar vacío)
+  6. Deploy
+  7. ¡Tu catálogo está en vivo! (vercel te da una URL)
+
+
+⚙️ ESTRUCTURA RECOMENDADA EN TU COMPUTADORA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+mi-catalogo/
+├── index.html           ← La página principal
+├── perfumes.json        ← Tus datos
+├── images/              ← Crea esta carpeta
+│   ├── armaf-001.jpg
+│   ├── armaf-002.jpg
+│   └── ...
+└── README.md            ← Documentación
+
+
+🔧 EDITOR DE TEXTO RECOMENDADO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Gratis:
+  • Visual Studio Code (recomendado) - https://code.visualstudio.com
+  • Sublime Text 4 - https://www.sublimetext.com
+  • Notepad++ - https://notepad-plus-plus.org
+
+Online:
+  • https://jsoncrack.com - Para editar JSON visualmente
+  • https://jsonlint.com - Para validar JSON
+
+
+🐛 SI LAS IMÁGENES NO CARGAN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ❓ Abre la consola: F12
+  ❓ Revisa si hay errores en rojo
+  ❓ Verifica que la carpeta "images/" exista
+  ❓ Verifica que la ruta en perfumes.json sea exacta
+  ❓ Extensión correcta: .jpg o .png
+  ❓ Los filtros no funcionan? Usa python -m http.server
+
+
+💡 TIPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  • Valida JSON antes de usar: https://jsonlint.com
+  • Usa extensiones vs code para JSON (ayuda a no tener errores)
+  • Tamaño de imágenes recomendado: 400x600px
+  • Los cambios en JSON se ven al recargar (F5)
+  • Para compartir tu catálogo: comparte la URL de Vercel
+
+
+📖 DOCUMENTACIÓN DETALLADA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Lee README.md para:
+    • Entender la estructura completa
+    • Personalizar colores
+    • Agregar nuevas categorías
+    • Desplegar en producción
+
+
+════════════════════════════════════════════════════════════════════════════════
+¿NECESITAS AYUDA? 
+Revisa README.md o PLANTILLA_AGREGAR_PERFUMES.md
+════════════════════════════════════════════════════════════════════════════════

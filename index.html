@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ORIGEN0 — Arabian Collection. Descubre nuestra selección exclusiva de fragancias orientales y modernas.">
+  <meta name="theme-color" content="#1c1c1c">
+  <meta property="og:title" content="ORIGEN0 — Arabian Collection">
+  <meta property="og:description" content="Catálogo exclusivo de fragancias premium">
+  <meta property="og:type" content="website">
+  
+  <title>ORIGEN0 — Arabian Collection | Catálogo de Perfumes</title>
+
+  <style>
+    /* ===== VARIABLES Y RESET ===== */
+    :root {
+      --bg: #f4f0e8;
+      --bg-secondary: #faf8f4;
+      --panel: #ffffff;
+      --panel-hover: #f8f3ea;
+      --text-primary: #111111;
+      --text-secondary: #746c61;
+      --text-muted: #9a8f7f;
+      --gold: #c8aa6e;
+      --gold-dark: #a68a4a;
+      --border: #e2d8ca;
+      --shadow-sm: 0 4px 12px rgba(42, 34, 24, 0.04);
+      --shadow-md: 0 10px 28px rgba(42, 34, 24, 0.08);
+      --shadow-lg: 0 16px 36px rgba(42, 34, 24, 0.12);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 24px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+    }
+
+    h1 { font-size: clamp(2.5rem, 8vw, 4rem); }
+    h2 { font-size: clamp(2rem, 6vw, 2.8rem); }
+    h3 { font-size: 1.25rem; }
+    h4 { font-size: 1.1rem; }
+
+    p { color: var(--text-secondary); }
+
+    a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    a:hover {
+      color: var(--gold-dark);
+      text-decoration: underline;
+    }
+
+    /* ===== LAYOUT PRINCIPAL ===== */
+    body {
+      padding: clamp(1.5rem, 5vw, 3.5rem);
+    }
+
+    main {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      width: 100%;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      min-height: 500px;
+      border-radius: var(--radius-lg);
+      background: 
+        linear-gradient(90deg, rgba(0,0,0,.72), rgba(0,0,0,.22)),
+        radial-gradient(circle at 78% 28%, rgba(200,170,110,.20), transparent 22%),
+        linear-gradient(135deg, #1c1c1c, #0d0d0d 70%);
+      color: #f7f1e6;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(2rem, 8vw, 4rem);
+      margin-bottom: clamp(2rem, 8vw, 3.5rem);
+      overflow: hidden;
+      position: relative;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: 8%;
+      bottom: -8%;
+      width: 380px;
+      height: 460px;
+      border-radius: 44px 44px 24px 24px;
+      background: linear-gradient(180deg, #3d2d18, #17120d);
+      box-shadow: 0 0 90px rgba(200,170,110,.20);
+      opacity: .75;
+      pointer-events: none;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      z-index: 2;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-image {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .logo-text {
+      color: var(--gold);
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .stats {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      border: 1px solid #2d2923;
+      border-radius: 999px;
+      padding: 10px 16px;
+      color: #d6cdbf;
+      font-size: 12px;
+      background: rgba(255,255,255,.03);
+      backdrop-filter: blur(8px);
+      white-space: nowrap;
+    }
+
+    .hero-content {
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .hero h1 {
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: #a89a85;
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    /* ===== FILTER BAR ===== */
+    .filter-section {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(244, 240, 232, .95);
+      backdrop-filter: blur(12px);
+      padding: 1rem 0;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      border: 1px solid #d7ccbd;
+      background: var(--panel);
+      color: var(--text-primary);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-primary);
+      background: var(--panel-hover);
+      transform: translateY(-2px);
+    }
+
+    .filter-btn.active {
+      background: var(--text-primary);
+      color: #fff;
+      border-color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-btn.active::before {
+      content: "✓";
+      display: inline-block;
+      margin-right: 4px;
+    }
+
+    /* ===== SECTIONS Y COLLECTIONS ===== */
+    .section {
+      margin-bottom: 4rem;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .section.hidden {
+      display: none;
+    }
+
+    .section-header {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .section-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .section-label {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .section-header-right {
+      color: var(--text-muted);
+      font-size: 14px;
+      text-align: right;
+    }
+
+    /* ===== BRAND BLOCKS ===== */
+    .brand-block {
+      margin-bottom: 3.5rem;
+    }
+
+    .brand-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #efe8dd;
+      gap: 1rem;
+    }
+
+    .brand-header h3 {
+      font-size: 1.5rem;
+    }
+
+    .brand-count {
+      color: var(--text-muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    /* ===== GRID LAYOUT ===== */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      width: 100%;
+    }
+
+    @media (max-width: 1400px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background: var(--panel);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--gold);
+    }
+
+    .card-image {
+      aspect-ratio: 3/4;
+      background: linear-gradient(180deg, #fff, #f2eee7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 12px;
+      filter: contrast(1.04) saturate(1.03);
+    }
+
+    .card-image.fallback::after {
+      content: "";
+      position: absolute;
+      width: 60px;
+      height: 100px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #4a3418, #1b130b);
+      box-shadow: 0 0 30px rgba(200, 170, 110, .2);
+    }
+
+    .card-content {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-brand {
+      display: block;
+      color: var(--gold);
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 0.75rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-ml {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .card-notes {
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-profile {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-style: italic;
+      margin-top: auto;
+      padding-top: 0.75rem;
+      border-top: 1px solid #f0ebe3;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      margin-top: 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--text-muted);
+      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+
+    .footer span {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== LOADING STATE ===== */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 400px;
+      color: var(--text-muted);
+      font-size: 18px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      body {
+        padding: 1.5rem;
+      }
+
+      .hero {
+        min-height: 350px;
+        padding: 2rem;
+      }
+
+      .hero::after {
+        width: 250px;
+        height: 350px;
+        right: 5%;
+        bottom: -5%;
+      }
+
+      .hero-top {
+        flex-direction: column;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .section-header-right {
+        text-align: left;
+      }
+
+      .brand-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .filter-btn {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .stats {
+        gap: 0.5rem;
+      }
+
+      .stat {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .section-header {
+        margin-bottom: 1.5rem;
+      }
+
+      .section-label {
+        font-size: 10px;
+      }
+
+      .card-title {
+        font-size: 13px;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer span {
+        width: 100%;
+      }
+    }
+
+    /* ===== ACCESSIBILITY ===== */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-top">
+        <div class="logo-container">
+          <img src="./images/logo.png" alt="ORIGEN0 logo" class="logo-image" onerror="this.style.display='none'">
+          <span class="logo-text">ORIGEN0</span>
+        </div>
+        <div class="stats">
+          <div class="stat" id="stat-products">80+ productos</div>
+          <div class="stat" id="stat-brands">5 marcas premium</div>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <h1>Arabian Collection</h1>
+        <p>Descubre nuestra selección exclusiva de fragancias orientales y modernas, cuidadosamente seleccionadas para ofrecerte las mejores esencias del mundo.</p>
+      </div>
+    </section>
+
+    <!-- FILTER BAR -->
+    <section class="filter-section">
+      <div class="filter-bar" id="filters">
+        <span class="sr-only">Filtrar productos por categoría</span>
+      </div>
+    </section>
+
+    <!-- PRODUCTS CONTAINER -->
+    <div id="products-container" class="container">
+      <div class="loading">Cargando catálogo...</div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span><strong>ORIGEN0</strong> — Arabian Collection</span>
+      <span>Catálogo de fragancias premium | © 2024</span>
+    </footer>
+  </main>
+
+  <script>
+    let productsData = null;
+    let currentFilter = 'all';
+
+    // Cargar datos
+    async function loadData() {
+      try {
+        const response = await fetch('./perfumes.json');
+        if (!response.ok) throw new Error('Error al cargar datos');
+        productsData = await response.json();
+        initializeFilters();
+        renderProducts('all');
+        updateStats();
+      } catch (error) {
+        console.error('Error cargando datos:', error);
+        document.getElementById('products-container').innerHTML = 
+          '<div class="loading" style="color: #d32f2f;">Error al cargar el catálogo. Intenta recargar la página.</div>';
+      }
+    }
+
+    // Inicializar filtros
+    function initializeFilters() {
+      const filterContainer = document.getElementById('filters');
+      filterContainer.innerHTML = '';
+
+      const filters = [
+        { id: 'all', label: 'Todos' },
+        { id: 'signatures', label: 'Signatures' },
+        { id: 'women', label: 'Para Damas' },
+        { id: 'body-care', label: 'Body Care' },
+        { id: 'luxury', label: 'Luxury' }
+      ];
+
+      filters.forEach(filter => {
+        const btn = document.createElement('button');
+        btn.className = `filter-btn ${filter.id === 'all' ? 'active' : ''}`;
+        btn.textContent = filter.label;
+        btn.setAttribute('data-filter', filter.id);
+        btn.setAttribute('aria-pressed', filter.id === 'all' ? 'true' : 'false');
+        btn.onclick = () => handleFilterClick(filter.id, btn);
+        filterContainer.appendChild(btn);
+      });
+    }
+
+    // Manejo de clics en filtros
+    function handleFilterClick(filterId, button) {
+      currentFilter = filterId;
+
+      // Actualizar estado visual
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      });
+      button.classList.add('active');
+      button.setAttribute('aria-pressed', 'true');
+
+      // Renderizar productos
+      renderProducts(filterId);
+      
+      // Scroll suave
+      document.querySelector('.filter-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Renderizar productos
+    function renderProducts(filter) {
+      const container = document.getElementById('products-container');
+      let html = '';
+
+      if (!productsData) return;
+
+      // Iterar sobre colecciones
+      productsData.collections.forEach(collection => {
+        const filteredProducts = collection.products.filter(product => {
+          if (filter === 'all') return true;
+          return product.category.toLowerCase().replace(/\s+/g, '-') === filter;
+        });
+
+        if (filteredProducts.length === 0) return;
+
+        html += `
+          <section class="section" data-section="${collection.id}">
+            <div class="section-header">
+              <div class="section-header-left">
+                <span class="section-label">${collection.category}</span>
+                <h2>${collection.name}</h2>
+              </div>
+              <div class="section-header-right">${filteredProducts.length} producto${filteredProducts.length > 1 ? 's' : ''}</div>
+            </div>
+
+            <div class="grid">
+              ${filteredProducts.map(product => `
+                <article class="card">
+                  <div class="card-image ${!product.image ? 'fallback' : ''}">
+                    ${product.image ? 
+                      `<img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.parentElement.classList.add('fallback'); this.remove();">` 
+                      : ''
+                    }
+                  </div>
+                  <div class="card-content">
+                    <span class="card-brand">${product.brand}</span>
+                    <h3 class="card-title">${product.name}</h3>
+                    <p class="card-ml">${product.ml}</p>
+                    <p class="card-notes"><strong>Notas:</strong> ${product.notes}</p>
+                    <p class="card-profile">${product.profile}</p>
+                  </div>
+                </article>
+              `).join('')}
+            </div>
+          </section>
+        `;
+      });
+
+      container.innerHTML = html || '<div class="loading">No hay productos en esta categoría</div>';
+    }
+
+    // Actualizar estadísticas
+    function updateStats() {
+      if (!productsData) return;
+      
+      const totalProducts = productsData.collections.reduce((sum, col) => sum + col.products.length, 0);
+      const brands = new Set(productsData.collections.map(col => col.name)).size;
+
+      document.getElementById('stat-products').textContent = `${totalProducts}+ productos`;
+      document.getElementById('stat-brands').textContent = `${brands} marcas premium`;
+    }
+
+    // Inicializar cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+{
+  "store": {
+    "name": "ORIGEN0",
+    "tagline": "Arabian Collection",
+    "description": "Descubre nuestra selección exclusiva de fragancias orientales y modernas"
+  },
+  "collections": [
+    {
+      "id": "armaf-signatures",
+      "name": "Armaf",
+      "category": "Signatures",
+      "description": "Fragancias premium de Armaf",
+      "products": [
+        {
+          "id": "armaf-001",
+          "name": "Armaf Creed Green Irish Tweed",
+          "brand": "Armaf",
+          "category": "Signatures",
+          "ml": "100ML",
+          "notes": "Citrus · alcanfor · lavanda",
+          "profile": "Fresco y herbal",
+          "image": "/images/armaf-green-irish-tweed.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Green+Irish+Tweed"
+        },
+        {
+          "id": "armaf-002",
+          "name": "Armaf Club De Nuit Milestone",
+          "brand": "Armaf",
+          "category": "Signatures",
+          "ml": "105ML",
+          "notes": "Ámbar · vainilla · madera de oud",
+          "profile": "Cálido y ambarado",
+          "image": "/images/armaf-club-de-nuit.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Club+De+Nuit"
+        },
+        {
+          "id": "armaf-003",
+          "name": "Armaf Club De Nuit Intense Man",
+          "brand": "Armaf",
+          "category": "Signatures",
+          "ml": "105ML",
+          "notes": "Cardamomo · canela · ámbar",
+          "profile": "Oriental y especiado",
+          "image": "/images/armaf-club-intense.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Club+De+Nuit+Intense"
+        },
+        {
+          "id": "armaf-004",
+          "name": "Armaf Club De Nuit Rare",
+          "brand": "Armaf",
+          "category": "Signatures",
+          "ml": "105ML",
+          "notes": "Cedro · incienso · ámbar",
+          "profile": "Sofisticado y duradero",
+          "image": "/images/armaf-club-rare.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Club+De+Nuit+Rare"
+        },
+        {
+          "id": "armaf-005",
+          "name": "Armaf Niche Black Onyx",
+          "brand": "Armaf",
+          "category": "Signatures",
+          "ml": "100ML",
+          "notes": "Café · chocolate · ámbar",
+          "profile": "Gourmet y sofisticado",
+          "image": "/images/armaf-black-onyx.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Black+Onyx"
+        },
+        {
+          "id": "armaf-006",
+          "name": "Armaf Tres Nuit",
+          "brand": "Armaf",
+          "category": "Signatures",
+          "ml": "100ML",
+          "notes": "Pimienta · oud · incienso",
+          "profile": "Misterioso y elegante",
+          "image": "/images/armaf-tres-nuit.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Tres+Nuit"
+        }
+      ]
+    },
+    {
+      "id": "armaf-women",
+      "name": "Armaf Para Damas",
+      "category": "Women",
+      "description": "Fragancias exclusivas para mujeres",
+      "products": [
+        {
+          "id": "armaf-w-001",
+          "name": "Armaf Creed Love In White",
+          "brand": "Armaf",
+          "category": "Women",
+          "ml": "100ML",
+          "notes": "Pera · jazmín · almízcares",
+          "profile": "Floral blanco y delicado",
+          "image": "/images/armaf-love-white.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Love+In+White"
+        },
+        {
+          "id": "armaf-w-002",
+          "name": "Armaf Club De Nuit Femme",
+          "brand": "Armaf",
+          "category": "Women",
+          "ml": "105ML",
+          "notes": "Rosa · jazmín · vainilla",
+          "profile": "Floral romántico",
+          "image": "/images/armaf-club-femme.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Club+De+Nuit+Femme"
+        },
+        {
+          "id": "armaf-w-003",
+          "name": "Armaf Club De Nuit Intense Woman",
+          "brand": "Armaf",
+          "category": "Women",
+          "ml": "105ML",
+          "notes": "Bergamota · naranja · ámbar",
+          "profile": "Fresco y sofisticado",
+          "image": "/images/armaf-club-intense-woman.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Club+De+Nuit+Intense+Woman"
+        },
+        {
+          "id": "armaf-w-004",
+          "name": "Armaf Niche Black Onyx Pour Femme",
+          "brand": "Armaf",
+          "category": "Women",
+          "ml": "100ML",
+          "notes": "Caramelo · vainilla · almízcares",
+          "profile": "Gourmet y seductor",
+          "image": "/images/armaf-black-onyx-femme.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Black+Onyx+Femme"
+        },
+        {
+          "id": "armaf-w-005",
+          "name": "Armaf Creed Love In Black",
+          "brand": "Armaf",
+          "category": "Women",
+          "ml": "100ML",
+          "notes": "Pimienta · orquídea · almizcares",
+          "profile": "Oscuro y sensual",
+          "image": "/images/armaf-love-black.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Love+In+Black"
+        }
+      ]
+    },
+    {
+      "id": "armaf-body-mist",
+      "name": "Armaf Body Mist",
+      "category": "Body Care",
+      "description": "Body mists y body splash refrescantes",
+      "products": [
+        {
+          "id": "armaf-bm-001",
+          "name": "Body Mist I Am Velvet Mirage",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Ámbar · vainilla · almizcares",
+          "profile": "Suave y envolvente",
+          "image": "/images/body-mist-velvet.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Velvet+Mirage"
+        },
+        {
+          "id": "armaf-bm-002",
+          "name": "Body Mist I Am Magic",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Frutas · flores · vainilla",
+          "profile": "Mágico y dulce",
+          "image": "/images/body-mist-magic.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=I+Am+Magic"
+        },
+        {
+          "id": "armaf-bm-003",
+          "name": "Body Mist I Am Frozen Blossom",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Flores blancas · menta · almizcares",
+          "profile": "Fresco y floral",
+          "image": "/images/body-mist-frozen.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Frozen+Blossom"
+        },
+        {
+          "id": "armaf-bm-004",
+          "name": "Body Mist I Am Selfless",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Almizcares · vainilla · cedro",
+          "profile": "Suave y desinteresado",
+          "image": "/images/body-mist-selfless.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=I+Am+Selfless"
+        },
+        {
+          "id": "armaf-bm-005",
+          "name": "Body Mist I Am Legacy",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Ámbar · incienso · madera",
+          "profile": "Heredado y duradero",
+          "image": "/images/body-mist-legacy.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=I+Am+Legacy"
+        },
+        {
+          "id": "armaf-bm-006",
+          "name": "Body Mist I Am Kaya",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Frutas tropicales · flores · almizcares",
+          "profile": "Tropical y refrescante",
+          "image": "/images/body-mist-kaya.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=I+Am+Kaya"
+        },
+        {
+          "id": "armaf-bm-007",
+          "name": "Body Mist I Am Heavenly",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Flores celestiales · almizcares · vainilla",
+          "profile": "Celestial y hermoso",
+          "image": "/images/body-mist-heavenly.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=I+Am+Heavenly"
+        },
+        {
+          "id": "armaf-bm-008",
+          "name": "Body Mist I Am Enigma",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Misterio · especias · almizcares",
+          "profile": "Enigmático y seductor",
+          "image": "/images/body-mist-enigma.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=I+Am+Enigma"
+        },
+        {
+          "id": "armaf-bm-009",
+          "name": "Body Mist I Am Elixir Of The Wild",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Flores silvestres · madera · almizcares",
+          "profile": "Salvaje y cautivador",
+          "image": "/images/body-mist-wild.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Elixir+Of+The+Wild"
+        },
+        {
+          "id": "armaf-bm-010",
+          "name": "Body Mist I Am Eba",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Frutas · flores · vainilla",
+          "profile": "Energético y juvenil",
+          "image": "/images/body-mist-eba.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=I+Am+Eba"
+        },
+        {
+          "id": "armaf-bm-011",
+          "name": "Body Mist I Am Divine",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Flores divinas · almizcares · ámbar",
+          "profile": "Divino y sofisticado",
+          "image": "/images/body-mist-divine.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=I+Am+Divine"
+        },
+        {
+          "id": "armaf-bm-012",
+          "name": "Body Mist I Am Fire",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Pimienta · especias · madera",
+          "profile": "Ardiente y apasionado",
+          "image": "/images/body-mist-fire.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=I+Am+Fire"
+        },
+        {
+          "id": "armaf-bm-013",
+          "name": "Body Mist I Am Celestial",
+          "brand": "Armaf",
+          "category": "Body Care",
+          "ml": "250ML",
+          "notes": "Flores celestiales · almizcares · vainilla",
+          "profile": "Etéreo y celestial",
+          "image": "/images/body-mist-celestial.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=I+Am+Celestial"
+        }
+      ]
+    },
+    {
+      "id": "afeer",
+      "name": "Afeer",
+      "category": "Luxury",
+      "description": "Fragancias de lujo y body splash premium",
+      "products": [
+        {
+          "id": "afeer-001",
+          "name": "Body Splash Sabah Al Ward",
+          "brand": "Afeer",
+          "category": "Luxury",
+          "ml": "200ML",
+          "notes": "Rosa · violeta · ámbar",
+          "profile": "Floral clásico y elegante",
+          "image": "/images/afeer-sabah-al-ward.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Sabah+Al+Ward"
+        },
+        {
+          "id": "afeer-002",
+          "name": "Body Splash Royal Amber",
+          "brand": "Afeer",
+          "category": "Luxury",
+          "ml": "200ML",
+          "notes": "Ámbar · vainilla · maderas",
+          "profile": "Cálido y ambarado",
+          "image": "/images/afeer-royal-amber.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Royal+Amber"
+        },
+        {
+          "id": "afeer-003",
+          "name": "Body Splash Fakhar Women",
+          "brand": "Afeer",
+          "category": "Luxury",
+          "ml": "200ML",
+          "notes": "Bergamota · nardos · jazmín · vainilla · vetiver",
+          "profile": "Floral blanco y elegante",
+          "image": "/images/afeer-fakhar.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Fakhar"
+        },
+        {
+          "id": "afeer-004",
+          "name": "Body Splash Nuit Royale Woman",
+          "brand": "Afeer",
+          "category": "Luxury",
+          "ml": "200ML",
+          "notes": "Ámbar · vainilla · especias",
+          "profile": "Cálido y elegante",
+          "image": "/images/afeer-nuit-royale.jpg",
+          "fallbackImage": "https://via.placeholder.com/200x300?text=Nuit+Royale"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "all",
+      "label": "Todos",
+      "icon": "grid"
+    },
+    {
+      "id": "signatures",
+      "label": "Signatures",
+      "icon": "sparkles"
+    },
+    {
+      "id": "women",
+      "label": "Para Damas",
+      "icon": "crown"
+    },
+    {
+      "id": "body-care",
+      "label": "Body Care",
+      "icon": "droplet"
+    },
+    {
+      "id": "luxury",
+      "label": "Luxury",
+      "icon": "star"
+    }
+  ]
+}
